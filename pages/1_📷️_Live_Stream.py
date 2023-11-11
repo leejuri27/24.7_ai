@@ -12,7 +12,7 @@ sys.path.append(BASE_DIR)
 
 from utils import get_mediapipe_pose
 from process_frame import ProcessFrame
-from thresholds import get_thresholds_beginner, get_thresholds_pro
+from thresholds import thresholds_squat, thresholds_lunge
 
 
 st.title('AI Fitness Trainer: Squats Analysis')
@@ -22,10 +22,10 @@ mode = st.radio('Select Mode', ['Beginner', 'Pro'], horizontal=True)
 thresholds = None 
 
 if mode == 'Beginner':
-    thresholds = get_thresholds_beginner()
+    thresholds = thresholds_squat()
 
 elif mode == 'Pro':
-    thresholds = get_thresholds_pro()
+    thresholds = thresholds_lunge()
 
 
 live_process_frame = ProcessFrame(thresholds=thresholds, flip_frame=True)

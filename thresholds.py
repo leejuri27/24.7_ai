@@ -1,7 +1,7 @@
 
 
-# Get thresholds for beginner mode
-def get_thresholds_beginner():
+# 스쿼트 자세 범위
+def thresholds_squat():
 
     _ANGLE_HIP_KNEE_VERT = {
                             'NORMAL' : (0,  32),
@@ -9,7 +9,7 @@ def get_thresholds_beginner():
                             'PASS'   : (70, 95)
                            }    
 
-        
+             
     thresholds = {
                     'HIP_KNEE_VERT': _ANGLE_HIP_KNEE_VERT,
 
@@ -21,15 +21,14 @@ def get_thresholds_beginner():
                     'INACTIVE_THRESH'  : 15.0,
 
                     'CNT_FRAME_THRESH' : 50
-                            
                 }
 
     return thresholds
 
 
 
-# Get thresholds for beginner mode
-def get_thresholds_pro():
+# 런지 자세 범위
+def thresholds_lunge():
 
     _ANGLE_HIP_KNEE_VERT = {
                             'NORMAL' : (0,  32),

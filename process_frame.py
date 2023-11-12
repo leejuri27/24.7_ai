@@ -94,7 +94,9 @@ class ProcessFrame:
             'curr_state':None,
 
             'SQUAT_COUNT': 0,
-            'IMPROPER_SQUAT':0
+            'IMPROPER_SQUAT':0,
+
+            'SQUAT_SCORE' : 0
             
         }
         # 자세 피드백
@@ -209,33 +211,13 @@ class ProcessFrame:
                     frame = cv2.flip(frame, 1)
 
                 # 휴식상태 표시
-                if display_inactivity:
-                    # cv2.putText(frame, 'Resetting SQUAT_COUNT due to inactivity!!!', (10, frame_height - 90), 
-                    #             self.font, 0.5, self.COLORS['blue'], 2, lineType=self.linetype)
-                    self.state_tracker['INACTIVE_TIME_FRONT'] = 0.0
-                    self.state_tracker['start_inactive_time_front'] = time.perf_counter()
+                # if display_inactivity:
+                #     # cv2.putText(frame, 'Resetting SQUAT_COUNT due to inactivity!!!', (10, frame_height - 90), 
+                #     #             self.font, 0.5, self.COLORS['blue'], 2, lineType=self.linetype)
+                #     self.state_tracker['INACTIVE_TIME_FRONT'] = 0.0
+                #     self.state_tracker['start_inactive_time_front'] = time.perf_counter()
 
-                # 올바른 스쿼트 표시
-                draw_text(
-                    frame, 
-                    "CORRECT: " + str(self.state_tracker['SQUAT_COUNT']), 
-                    pos=(int(frame_width*0.68), 30),
-                    text_color=(255, 255, 230),
-                    font_scale=0.7,
-                    text_color_bg=(18, 185, 0)
-                )  
-                
-                # 잘못된 스쿼트 표시
-                draw_text(
-                    frame, 
-                    "INCORRECT: " + str(self.state_tracker['IMPROPER_SQUAT']), 
-                    pos=(int(frame_width*0.68), 80),
-                    text_color=(255, 255, 230),
-                    font_scale=0.7,
-                    text_color_bg=(221, 0, 0),
-                    
-                )  
-                
+        
                 # 카메라가 정렬되지 않았음.    
                 draw_text(
                     frame, 
@@ -394,6 +376,7 @@ class ProcessFrame:
                 # -------------------------------------- PERFORM FEEDBACK ACTIONS --------------------------------------
                 # 현재 상태가 s1이 아닌 경우
                 else:
+                ## 엉덩이 각도 계산
                     # 엉덩이 수직 각도가 범위 임계값 상한값보다 큰 경우 텍스트 리스트의 첫번째 텍스트가 표시되게 설정.
                     if hip_vertical_angle > self.thresholds['HIP_THRESH'][1]:
                         self.state_tracker['DISPLAY_TEXT'][0] = True
@@ -403,7 +386,7 @@ class ProcessFrame:
                          self.state_tracker['state_seq'].count('s2')==1:
                             self.state_tracker['DISPLAY_TEXT'][1] = True
                         
-                                        
+                ## 무릎 각도 계산                       
                     # 무릎 수직 각도가 범위 임계값 하한값과 상한값 사이에 있으며, 상태 시퀀스가 s2에 포함된 경우 LOWER_HIPS 라는 텍스트가 표시되게 설정.
                     if self.thresholds['KNEE_THRESH'][0] < knee_vertical_angle < self.thresholds['KNEE_THRESH'][1] and \
                        self.state_tracker['state_seq'].count('s2')==1:
@@ -414,6 +397,7 @@ class ProcessFrame:
                         self.state_tracker['DISPLAY_TEXT'][3] = True
                         self.state_tracker['INCORRECT_POSTURE'] = True
 
+                ## 발목 각도 계산
                     # 발목 수직 각도가 범위보다 큰 경우, 텍스트 리스트의 네번째 요소를 표시되게 설정, 올바른 자세로 설정
                     if (ankle_vertical_angle > self.thresholds['ANKLE_THRESH']):
                         self.state_tracker['DISPLAY_TEXT'][2] = True
@@ -429,26 +413,26 @@ class ProcessFrame:
                 
                 
                 # ----------------------------------- COMPUTE INACTIVITY ---------------------------------------------
-                # 비활동 시간 계산
-                display_inactivity = False
-                # 현재 상태와 이전 상태가 동일한 경우
-                if self.state_tracker['curr_state'] == self.state_tracker['prev_state']:
-                    # 현재 시간을 가져와 상태 업데이트
-                    end_time = time.perf_counter()
-                    self.state_tracker['INACTIVE_TIME'] += end_time - self.state_tracker['start_inactive_time']
-                    self.state_tracker['start_inactive_time'] = end_time
+                # # 비활동 시간 계산
+                # display_inactivity = False
+                # # 현재 상태와 이전 상태가 동일한 경우
+                # if self.state_tracker['curr_state'] == self.state_tracker['prev_state']:
+                #     # 현재 시간을 가져와 상태 업데이트
+                #     end_time = time.perf_counter()
+                #     self.state_tracker['INACTIVE_TIME'] += end_time - self.state_tracker['start_inactive_time']
+                #     self.state_tracker['start_inactive_time'] = end_time
                     
-                    # 멈춰있는 상태가 멈춰있는 상태 임계값을 초과하면 스쿼트 카운트들을 초기화 하고 비활동 상태로 설정
-                    if self.state_tracker['INACTIVE_TIME'] >= self.thresholds['INACTIVE_THRESH']:
-                        self.state_tracker['SQUAT_COUNT'] = 0
-                        self.state_tracker['IMPROPER_SQUAT'] = 0
-                        display_inactivity = True
+                #     # 멈춰있는 상태가 멈춰있는 상태 임계값을 초과하면 스쿼트 카운트들을 초기화 하고 비활동 상태로 설정
+                #     if self.state_tracker['INACTIVE_TIME'] >= self.thresholds['INACTIVE_THRESH']:
+                #         self.state_tracker['SQUAT_COUNT'] = 0
+                #         self.state_tracker['IMPROPER_SQUAT'] = 0
+                #         display_inactivity = True
 
-                # 그렇지 않은 경우
-                else:
-                    # 현재 시간을 초기화 
-                    self.state_tracker['start_inactive_time'] = time.perf_counter()
-                    self.state_tracker['INACTIVE_TIME'] = 0.0
+                # # 그렇지 않은 경우
+                # else:
+                #     # 현재 시간을 초기화 
+                #     self.state_tracker['start_inactive_time'] = time.perf_counter()
+                #     self.state_tracker['INACTIVE_TIME'] = 0.0
 
                 # -------------------------------------------------------------------------------------------------------
               
@@ -458,7 +442,7 @@ class ProcessFrame:
                 knee_text_coord_x = knee_coord[0] + 15
                 ankle_text_coord_x = ankle_coord[0] + 10
                 
-                # 프레임 뒤집은 경우, 택스트 좌표 번대로 설정
+                # 프레임 뒤집은 경우, 택스트 좌표 반대로 설정
                 if self.flip_frame:
                     frame = cv2.flip(frame, 1)
                     hip_text_coord_x = frame_width - hip_coord[0] + 10
@@ -477,10 +461,10 @@ class ProcessFrame:
 
 
                 # 비활동 시간에 대한 처리
-                if display_inactivity:
-                    # cv2.putText(frame, 'Resetting COUNTERS due to inactivity!!!', (10, frame_height - 20), self.font, 0.5, self.COLORS['blue'], 2, lineType=self.linetype)
-                    self.state_tracker['start_inactive_time'] = time.perf_counter()
-                    self.state_tracker['INACTIVE_TIME'] = 0.0
+                # if display_inactivity:
+                #     # cv2.putText(frame, 'Resetting COUNTERS due to inactivity!!!', (10, frame_height - 20), self.font, 0.5, self.COLORS['blue'], 2, lineType=self.linetype)
+                #     self.state_tracker['start_inactive_time'] = time.perf_counter()
+                #     self.state_tracker['INACTIVE_TIME'] = 0.0
 
                 # 프레임에 엉덩이, 무릎, 발목의  수직 각도를 나타내는 텍스트 표시
                 cv2.putText(frame, str(int(hip_vertical_angle)), (hip_text_coord_x, hip_coord[1]), self.font, 0.4, self.COLORS['light_green'], 2, lineType=cv2.LINE_4)
@@ -488,25 +472,26 @@ class ProcessFrame:
                 cv2.putText(frame, str(int(ankle_vertical_angle)), (ankle_text_coord_x, ankle_coord[1]), self.font, 0.4, self.COLORS['light_green'], 2, lineType=cv2.LINE_4)
 
                 # 올바른 스쿼트 카운트 정보 표시
-                draw_text(
-                    frame, 
-                    "CORRECT: " + str(self.state_tracker['SQUAT_COUNT']), 
-                    pos=(int(frame_width*0.68), 30),
-                    text_color=(255, 255, 230),
-                    font_scale=0.7,
-                    text_color_bg=(18, 185, 0)
-                )  
+                # draw_text(
+                #     frame, 
+                #     "CORRECT: " + str(self.state_tracker['SQUAT_COUNT']), 
+                #     pos=(int(frame_width*0.68), 30),
+                #     text_color=(255, 255, 230),
+                #     font_scale=0.7,
+                #     text_color_bg=(18, 185, 0)
+                # )  
                 
-                # 잘못된 스쿼트 카운트 정보 표시
+                # 스쿼트 자세분석 점수 표시
                 draw_text(
                     frame, 
-                    "INCORRECT: " + str(self.state_tracker['IMPROPER_SQUAT']), 
+                    "SCORE: " + str(self.state_tracker['SQUAT_SCORE']), 
                     pos=(int(frame_width*0.68), 80),
                     text_color=(255, 255, 230),
                     font_scale=0.7,
-                    text_color_bg=(221, 0, 0),
+                    text_color_bg=(0, 100, 0),
                     
                 )  
+
                 
                 # 초기화
                 self.state_tracker['DISPLAY_TEXT'][self.state_tracker['COUNT_FRAMES'] > self.thresholds['CNT_FRAME_THRESH']] = False
@@ -516,57 +501,58 @@ class ProcessFrame:
 
        
         # 아니면 이전 상태를 현재 상태로 업데이트
-        else:
+        # else:
 
-            if self.flip_frame:
-                frame = cv2.flip(frame, 1)
+        #     if self.flip_frame:
+        #         frame = cv2.flip(frame, 1)
 
-            end_time = time.perf_counter()
-            self.state_tracker['INACTIVE_TIME'] += end_time - self.state_tracker['start_inactive_time']
+        #     end_time = time.perf_counter()
+        #     self.state_tracker['INACTIVE_TIME'] += end_time - self.state_tracker['start_inactive_time']
 
-            display_inactivity = False
+        #     display_inactivity = False
 
-            if self.state_tracker['INACTIVE_TIME'] >= self.thresholds['INACTIVE_THRESH']:
-                self.state_tracker['SQUAT_COUNT'] = 0
-                self.state_tracker['IMPROPER_SQUAT'] = 0
-                # cv2.putText(frame, 'Resetting SQUAT_COUNT due to inactivity!!!', (10, frame_height - 25), self.font, 0.7, self.COLORS['blue'], 2)
-                display_inactivity = True
+        #     if self.state_tracker['INACTIVE_TIME'] >= self.thresholds['INACTIVE_THRESH']:
+        #         self.state_tracker['SQUAT_COUNT'] = 0
+        #         self.state_tracker['IMPROPER_SQUAT'] = 0
+        #         # cv2.putText(frame, 'Resetting SQUAT_COUNT due to inactivity!!!', (10, frame_height - 25), self.font, 0.7, self.COLORS['blue'], 2)
+        #         display_inactivity = True
 
-            self.state_tracker['start_inactive_time'] = end_time
+        #     self.state_tracker['start_inactive_time'] = end_time
 
-            draw_text(
-                    frame, 
-                    "CORRECT: " + str(self.state_tracker['SQUAT_COUNT']), 
-                    pos=(int(frame_width*0.68), 30),
-                    text_color=(255, 255, 230),
-                    font_scale=0.7,
-                    text_color_bg=(18, 185, 0)
-                )  
+        #     # draw_text(
+        #     #         frame, 
+        #     #         "CORRECT: " + str(self.state_tracker['SQUAT_COUNT']), 
+        #     #         pos=(int(frame_width*0.68), 30),
+        #     #         text_color=(255, 255, 230),
+        #     #         font_scale=0.7,
+        #     #         text_color_bg=(18, 185, 0)
+        #     #     )  
                 
+        #     # 스쿼트 자세분석 점수 표시
+        #     # draw_text(
+        #     #         frame, 
+        #     #         "SCORE: " + str(self.state_tracker['SQUAT_SCORE']), 
+        #     #         pos=(int(frame_width*0.68), 80),
+        #     #         text_color=(255, 255, 230),
+        #     #         font_scale=0.7,
+        #     #         text_color_bg=(0, 100, 0),
+        #     #     )  
 
-            draw_text(
-                    frame, 
-                    "INCORRECT: " + str(self.state_tracker['IMPROPER_SQUAT']), 
-                    pos=(int(frame_width*0.68), 80),
-                    text_color=(255, 255, 230),
-                    font_scale=0.7,
-                    text_color_bg=(221, 0, 0),
-                )  
-
-            if display_inactivity:
-                self.state_tracker['start_inactive_time'] = time.perf_counter()
-                self.state_tracker['INACTIVE_TIME'] = 0.0
+            
+        #     if display_inactivity:
+        #         self.state_tracker['start_inactive_time'] = time.perf_counter()
+        #         self.state_tracker['INACTIVE_TIME'] = 0.0
             
             
-            # Reset all other state variables
+        #     # Reset all other state variables
             
-            self.state_tracker['prev_state'] =  None
-            self.state_tracker['curr_state'] = None
-            self.state_tracker['INACTIVE_TIME_FRONT'] = 0.0
-            self.state_tracker['INCORRECT_POSTURE'] = False
-            self.state_tracker['DISPLAY_TEXT'] = np.full((5,), False)
-            self.state_tracker['COUNT_FRAMES'] = np.zeros((5,), dtype=np.int64)
-            self.state_tracker['start_inactive_time_front'] = time.perf_counter()
+        #     self.state_tracker['prev_state'] =  None
+        #     self.state_tracker['curr_state'] = None
+        #     self.state_tracker['INACTIVE_TIME_FRONT'] = 0.0
+        #     self.state_tracker['INCORRECT_POSTURE'] = False
+        #     self.state_tracker['DISPLAY_TEXT'] = np.full((5,), False)
+        #     self.state_tracker['COUNT_FRAMES'] = np.zeros((5,), dtype=np.int64)
+        #     self.state_tracker['start_inactive_time_front'] = time.perf_counter()
             
             
         return frame

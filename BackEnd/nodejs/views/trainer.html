@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>회원가입</h1>
+    {# enctype="multipart/form-data" #}
+    <form method="post" action="/trainer/join" >
+      <label for="trainerEmail">이메일</label>
+      <input type="text" id="trainerEmail" name="trainerEmail"><br>
+      <label for="trainerPw">비밀번호</label>
+      <input type="text" id="trainerPw" name="trainerPw"><br>
+      <label for="trainerName">이름</label>
+      <input type="text" id="trainerName" name="trainerName"><br>
+      <label for="profilePic">사진</label>
+      <input type="file" id="profilePic" name="profilePic"><br>
+      <label for="career">커리어</label>
+      <textarea name="career" id="career" cols="30" rows="10"></textarea>
+      <input type="submit" value="회원가입">
+    </form>
+</body>
+</html>

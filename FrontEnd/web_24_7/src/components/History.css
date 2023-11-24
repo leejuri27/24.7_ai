@@ -1,0 +1,91 @@
+/* History Container */
+
+#history {
+  width: 100%;
+  height: 100%;
+}
+
+.history-container {
+  margin: 0 3%;
+  padding-top: 3%;
+  width: 94%;
+  height: 87%;
+  border-radius: 1em;
+}
+
+.history-item {
+  display: flex;
+  flex-direction: row;
+  width: 94%;
+  padding: 3%;
+}
+
+.history-container hr {
+  width: 93%;
+  height: 1px;
+  background-color: black;
+  margin: 0 auto;
+}
+
+.history-header > p {
+  font-size: 1.3em;
+}
+
+.history-index {
+  width: 7%;
+  text-align: center;
+}
+
+.history-category {
+  width: 15%;
+  text-align: center;
+}
+
+.history-date {
+  width: 25%;
+  text-align: center;
+}
+
+.history-comment {
+  width: 55%;
+  text-align: center;
+}
+
+.history-check {
+  height: 0.7em;
+  width: 0.7em;
+}
+
+.not-checked {
+  background-color: #ff3c3c;
+  border-radius: 1em;
+}
+
+#page-number-container {
+  margin-top: 2%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#page-number li {
+  width: 2em;
+  height: 2em;
+  float: left;
+  margin: 0;
+  line-height: 2em;
+  text-align: center;
+  color: #7254f5;
+  background-color: white;
+  border: 1px solid #7254f5;
+}
+
+#page-number li:hover {
+  background-color: #7254f5;
+  color: white;
+}
+
+#page-number #current-page {
+  background-color: #7254f5;
+  color: white;
+}

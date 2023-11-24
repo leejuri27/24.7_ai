@@ -1,0 +1,114 @@
+/* Join Page */
+
+.join {
+    width: 30vw;
+    margin: 10% auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  #join-logo {
+    max-width: 10vw;
+  }
+  
+  .join-form {
+    width: 30vw;
+    margin-top: 5%;
+  }
+  
+  .join-input {
+    padding: 1vh 2.5%;
+    width: 94.5%;
+    height: 1.5em;
+    border: 1px solid #7254F5;
+    background-color: #ffffff;
+    border-radius: 0.5em;
+    margin: 1vh 0;
+  }
+  
+  .join-form > p {
+    margin-top: 5%;
+  }
+  
+  #join-email-form {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  #join-email-form > input[type=text] {
+    width: 65%;
+  }
+  
+  #dup-check-btn {
+    padding: 1vh 2.5%;
+    background-color: #7254F5;
+    border-radius: 0.5em;
+    color: #F9F7FE;
+    margin: 1vh 0;
+    width: 27%;
+  }
+  
+  p.check-result {
+    width: 100%;
+    text-align: center;
+    margin-top: 1%;
+  }
+  
+  #join-upload-form {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  #join-upload-form > input {
+    width: 65%;
+  }
+  
+  
+  .join-form label {
+    padding: 1vh 2.5%;
+    background-color: #7254F5;
+    border: 1px solid #7254F5;
+  
+    border-radius: 0.5em;
+    color: #F9F7FE;
+    margin: 1vh 0;
+    width: 22%;
+    text-align: center;
+    line-height: 1.5em;
+  }
+  
+  .join-form input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+  }
+  
+  #join-career {
+    margin: 1vh 0;
+    padding:1vh 2.5%;
+    resize: none;
+    border-radius: 0.5em;
+    border: 1px solid #7254F5;
+    width: 94.5%;
+    height: 7em;
+  }
+  
+  #join-btn {
+    color: #ffffff;
+    background-color: #7254F5;
+    border: 1px solid #7254F5;
+    height: 100%;
+    width: 100%;
+  }
+  
+  #join-btn:hover {
+    color: #7254F5;
+    border: 1px solid #7254F5;
+    background-color: #faf7ff;
+  }
+  
+  

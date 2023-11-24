@@ -1,0 +1,196 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.app_24_7"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="33" />
+10
+11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+11-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\debug\AndroidManifest.xml:5:5-77
+11-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\debug\AndroidManifest.xml:5:22-75
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:3:5-67
+12-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:3:22-64
+13    <uses-permission android:name="android.permission.CAMERA" /> <!-- optionally, if you want to record audio: -->
+13-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:4:5-65
+13-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:4:22-62
+14    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+14-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:7:1-67
+14-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:7:18-64
+15    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
+15-->[com.facebook.flipper:flipper:0.182.0] C:\Users\gjaischool\.gradle\caches\transforms-3\e13f88164840fe641a466d05cd8edac7\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:5-76
+15-->[com.facebook.flipper:flipper:0.182.0] C:\Users\gjaischool\.gradle\caches\transforms-3\e13f88164840fe641a466d05cd8edac7\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:22-73
+16    <!-- <uses-sdk android:minSdkVersion="14"/> -->
+17    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+17-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\gjaischool\.gradle\caches\transforms-3\e39449332b16abbff71917ad5661bdd3\transformed\jetified-transport-backend-cct-2.3.3\AndroidManifest.xml:25:5-79
+17-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\gjaischool\.gradle\caches\transforms-3\e39449332b16abbff71917ad5661bdd3\transformed\jetified-transport-backend-cct-2.3.3\AndroidManifest.xml:25:22-76
+18
+19    <application
+19-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:9:5-28:19
+20        android:name="com.app_24_7.MainApplication"
+20-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:10:7-38
+21        android:allowBackup="false"
+21-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:14:7-34
+22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+22-->[androidx.core:core:1.8.0] C:\Users\gjaischool\.gradle\caches\transforms-3\9623e378e4dfc57c47793d0ffd25ee05\transformed\core-1.8.0\AndroidManifest.xml:24:18-86
+23        android:debuggable="true"
+24        android:icon="@mipmap/ic_launcher"
+24-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:12:7-41
+25        android:label="@string/app_name"
+25-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:11:7-39
+26        android:roundIcon="@mipmap/ic_launcher_round"
+26-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:13:7-52
+27        android:theme="@style/AppTheme"
+27-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:15:7-38
+28        android:usesCleartextTraffic="true" >
+28-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\debug\AndroidManifest.xml:8:9-44
+29        <activity
+29-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\debug\AndroidManifest.xml:11:9-111
+30            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+30-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\debug\AndroidManifest.xml:11:19-83
+31            android:exported="false" />
+31-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\debug\AndroidManifest.xml:11:84-108
+32        <activity
+32-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:16:7-27:18
+33            android:name="com.app_24_7.MainActivity"
+33-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:17:9-37
+34            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+34-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:19:9-118
+35            android:exported="true"
+35-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:22:9-32
+36            android:label="@string/app_name"
+36-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:18:9-41
+37            android:launchMode="singleTask"
+37-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:20:9-40
+38            android:windowSoftInputMode="adjustResize" >
+38-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:21:9-51
+39            <intent-filter>
+39-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:23:9-26:25
+40                <action android:name="android.intent.action.MAIN" />
+40-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:24:13-65
+40-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:24:21-62
+41
+42                <category android:name="android.intent.category.LAUNCHER" />
+42-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:25:13-73
+42-->C:\Users\gjaischool\Desktop\24.7N\24.7\FrontEnd\app_24_7\android\app\src\main\AndroidManifest.xml:25:23-70
+43            </intent-filter>
+44        </activity>
+45
+46        <service
+46-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\gjaischool\.gradle\caches\transforms-3\6c6ca2db29f2dd0bb3df728cabfe39f1\transformed\jetified-play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:9:9-15:19
+47            android:name="com.google.mlkit.common.internal.MlKitComponentDiscoveryService"
+47-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\gjaischool\.gradle\caches\transforms-3\6c6ca2db29f2dd0bb3df728cabfe39f1\transformed\jetified-play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:10:13-91
+48            android:directBootAware="true"
+48-->[com.google.mlkit:common:18.9.0] C:\Users\gjaischool\.gradle\caches\transforms-3\c4d4d66f7ffd81f9ef7c75ad54e7dab7\transformed\jetified-common-18.9.0\AndroidManifest.xml:17:13-43
+49            android:exported="false" >
+49-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\gjaischool\.gradle\caches\transforms-3\6c6ca2db29f2dd0bb3df728cabfe39f1\transformed\jetified-play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:11:13-37
+50            <meta-data
+50-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\gjaischool\.gradle\caches\transforms-3\6c6ca2db29f2dd0bb3df728cabfe39f1\transformed\jetified-play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:12:13-14:85
+51                android:name="com.google.firebase.components:com.google.mlkit.vision.barcode.internal.BarcodeRegistrar"
+51-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\gjaischool\.gradle\caches\transforms-3\6c6ca2db29f2dd0bb3df728cabfe39f1\transformed\jetified-play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:13:17-120
+52                android:value="com.google.firebase.components.ComponentRegistrar" />
+52-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\gjaischool\.gradle\caches\transforms-3\6c6ca2db29f2dd0bb3df728cabfe39f1\transformed\jetified-play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:14:17-82
+53            <meta-data
+53-->[com.google.mlkit:vision-common:17.3.0] C:\Users\gjaischool\.gradle\caches\transforms-3\67a42aeeda448fac1a51cd9dd59e6400\transformed\jetified-vision-common-17.3.0\AndroidManifest.xml:12:13-14:85
+54                android:name="com.google.firebase.components:com.google.mlkit.vision.common.internal.VisionCommonRegistrar"
+54-->[com.google.mlkit:vision-common:17.3.0] C:\Users\gjaischool\.gradle\caches\transforms-3\67a42aeeda448fac1a51cd9dd59e6400\transformed\jetified-vision-common-17.3.0\AndroidManifest.xml:13:17-124
+55                android:value="com.google.firebase.components.ComponentRegistrar" />
+55-->[com.google.mlkit:vision-common:17.3.0] C:\Users\gjaischool\.gradle\caches\transforms-3\67a42aeeda448fac1a51cd9dd59e6400\transformed\jetified-vision-common-17.3.0\AndroidManifest.xml:14:17-82
+56            <meta-data
+56-->[com.google.mlkit:common:18.9.0] C:\Users\gjaischool\.gradle\caches\transforms-3\c4d4d66f7ffd81f9ef7c75ad54e7dab7\transformed\jetified-common-18.9.0\AndroidManifest.xml:20:13-22:85
+57                android:name="com.google.firebase.components:com.google.mlkit.common.internal.CommonComponentRegistrar"
+57-->[com.google.mlkit:common:18.9.0] C:\Users\gjaischool\.gradle\caches\transforms-3\c4d4d66f7ffd81f9ef7c75ad54e7dab7\transformed\jetified-common-18.9.0\AndroidManifest.xml:21:17-120
+58                android:value="com.google.firebase.components.ComponentRegistrar" />
+58-->[com.google.mlkit:common:18.9.0] C:\Users\gjaischool\.gradle\caches\transforms-3\c4d4d66f7ffd81f9ef7c75ad54e7dab7\transformed\jetified-common-18.9.0\AndroidManifest.xml:22:17-82
+59        </service>
+60
+61        <provider
+61-->[com.google.mlkit:common:18.9.0] C:\Users\gjaischool\.gradle\caches\transforms-3\c4d4d66f7ffd81f9ef7c75ad54e7dab7\transformed\jetified-common-18.9.0\AndroidManifest.xml:9:9-13:38
+62            android:name="com.google.mlkit.common.internal.MlKitInitProvider"
+62-->[com.google.mlkit:common:18.9.0] C:\Users\gjaischool\.gradle\caches\transforms-3\c4d4d66f7ffd81f9ef7c75ad54e7dab7\transformed\jetified-common-18.9.0\AndroidManifest.xml:10:13-78
+63            android:authorities="com.app_24_7.mlkitinitprovider"
+63-->[com.google.mlkit:common:18.9.0] C:\Users\gjaischool\.gradle\caches\transforms-3\c4d4d66f7ffd81f9ef7c75ad54e7dab7\transformed\jetified-common-18.9.0\AndroidManifest.xml:11:13-69
+64            android:exported="false"
+64-->[com.google.mlkit:common:18.9.0] C:\Users\gjaischool\.gradle\caches\transforms-3\c4d4d66f7ffd81f9ef7c75ad54e7dab7\transformed\jetified-common-18.9.0\AndroidManifest.xml:12:13-37
+65            android:initOrder="99" />
+65-->[com.google.mlkit:common:18.9.0] C:\Users\gjaischool\.gradle\caches\transforms-3\c4d4d66f7ffd81f9ef7c75ad54e7dab7\transformed\jetified-common-18.9.0\AndroidManifest.xml:13:13-35
+66
+67        <activity
+67-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\gjaischool\.gradle\caches\transforms-3\7bc2107a0f24dde54b783ba4b64ec0fd\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:9-22:45
+68            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+68-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\gjaischool\.gradle\caches\transforms-3\7bc2107a0f24dde54b783ba4b64ec0fd\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:19-85
+69            android:exported="false"
+69-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\gjaischool\.gradle\caches\transforms-3\7bc2107a0f24dde54b783ba4b64ec0fd\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:22:19-43
+70            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+70-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\gjaischool\.gradle\caches\transforms-3\7bc2107a0f24dde54b783ba4b64ec0fd\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:21:19-78
+71
+72        <meta-data
+72-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\gjaischool\.gradle\caches\transforms-3\bf9b6fb405d2f7fd8250171739588e78\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:21:9-23:69
+73            android:name="com.google.android.gms.version"
+73-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\gjaischool\.gradle\caches\transforms-3\bf9b6fb405d2f7fd8250171739588e78\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:22:13-58
+74            android:value="@integer/google_play_services_version" />
+74-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\gjaischool\.gradle\caches\transforms-3\bf9b6fb405d2f7fd8250171739588e78\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:23:13-66
+75        <meta-data
+75-->[com.facebook.soloader:soloader:0.10.5] C:\Users\gjaischool\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:12:9-14:37
+76            android:name="com.facebook.soloader.enabled"
+76-->[com.facebook.soloader:soloader:0.10.5] C:\Users\gjaischool\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:13:13-57
+77            android:value="false" />
+77-->[com.facebook.soloader:soloader:0.10.5] C:\Users\gjaischool\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:14:13-34
+78
+79        <provider
+79-->[androidx.emoji2:emoji2:1.2.0] C:\Users\gjaischool\.gradle\caches\transforms-3\259206a491dfa4b8b6052b2b1c41d979\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+80            android:name="androidx.startup.InitializationProvider"
+80-->[androidx.emoji2:emoji2:1.2.0] C:\Users\gjaischool\.gradle\caches\transforms-3\259206a491dfa4b8b6052b2b1c41d979\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+81            android:authorities="com.app_24_7.androidx-startup"
+81-->[androidx.emoji2:emoji2:1.2.0] C:\Users\gjaischool\.gradle\caches\transforms-3\259206a491dfa4b8b6052b2b1c41d979\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+82            android:exported="false" >
+82-->[androidx.emoji2:emoji2:1.2.0] C:\Users\gjaischool\.gradle\caches\transforms-3\259206a491dfa4b8b6052b2b1c41d979\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+83            <meta-data
+83-->[androidx.emoji2:emoji2:1.2.0] C:\Users\gjaischool\.gradle\caches\transforms-3\259206a491dfa4b8b6052b2b1c41d979\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+84                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+84-->[androidx.emoji2:emoji2:1.2.0] C:\Users\gjaischool\.gradle\caches\transforms-3\259206a491dfa4b8b6052b2b1c41d979\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+85                android:value="androidx.startup" />
+85-->[androidx.emoji2:emoji2:1.2.0] C:\Users\gjaischool\.gradle\caches\transforms-3\259206a491dfa4b8b6052b2b1c41d979\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+86            <meta-data
+86-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\gjaischool\.gradle\caches\transforms-3\b1c537e6049df5a2dcb1a9b20b1a8868\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+87                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+87-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\gjaischool\.gradle\caches\transforms-3\b1c537e6049df5a2dcb1a9b20b1a8868\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+88                android:value="androidx.startup" />
+88-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\gjaischool\.gradle\caches\transforms-3\b1c537e6049df5a2dcb1a9b20b1a8868\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+89        </provider>
+90
+91        <service
+91-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\gjaischool\.gradle\caches\transforms-3\e39449332b16abbff71917ad5661bdd3\transformed\jetified-transport-backend-cct-2.3.3\AndroidManifest.xml:29:9-35:19
+92            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+92-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\gjaischool\.gradle\caches\transforms-3\e39449332b16abbff71917ad5661bdd3\transformed\jetified-transport-backend-cct-2.3.3\AndroidManifest.xml:30:13-103
+93            android:exported="false" >
+93-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\gjaischool\.gradle\caches\transforms-3\e39449332b16abbff71917ad5661bdd3\transformed\jetified-transport-backend-cct-2.3.3\AndroidManifest.xml:31:13-37
+94            <meta-data
+94-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\gjaischool\.gradle\caches\transforms-3\e39449332b16abbff71917ad5661bdd3\transformed\jetified-transport-backend-cct-2.3.3\AndroidManifest.xml:32:13-34:39
+95                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+95-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\gjaischool\.gradle\caches\transforms-3\e39449332b16abbff71917ad5661bdd3\transformed\jetified-transport-backend-cct-2.3.3\AndroidManifest.xml:33:17-94
+96                android:value="cct" />
+96-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\gjaischool\.gradle\caches\transforms-3\e39449332b16abbff71917ad5661bdd3\transformed\jetified-transport-backend-cct-2.3.3\AndroidManifest.xml:34:17-36
+97        </service>
+98        <service
+98-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\gjaischool\.gradle\caches\transforms-3\5b4aa339182f7c0c9798b03e5e65fdd0\transformed\jetified-transport-runtime-2.2.6\AndroidManifest.xml:26:9-30:19
+99            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+99-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\gjaischool\.gradle\caches\transforms-3\5b4aa339182f7c0c9798b03e5e65fdd0\transformed\jetified-transport-runtime-2.2.6\AndroidManifest.xml:27:13-117
+100            android:exported="false"
+100-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\gjaischool\.gradle\caches\transforms-3\5b4aa339182f7c0c9798b03e5e65fdd0\transformed\jetified-transport-runtime-2.2.6\AndroidManifest.xml:28:13-37
+101            android:permission="android.permission.BIND_JOB_SERVICE" >
+101-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\gjaischool\.gradle\caches\transforms-3\5b4aa339182f7c0c9798b03e5e65fdd0\transformed\jetified-transport-runtime-2.2.6\AndroidManifest.xml:29:13-69
+102        </service>
+103
+104        <receiver
+104-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\gjaischool\.gradle\caches\transforms-3\5b4aa339182f7c0c9798b03e5e65fdd0\transformed\jetified-transport-runtime-2.2.6\AndroidManifest.xml:32:9-34:40
+105            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+105-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\gjaischool\.gradle\caches\transforms-3\5b4aa339182f7c0c9798b03e5e65fdd0\transformed\jetified-transport-runtime-2.2.6\AndroidManifest.xml:33:13-132
+106            android:exported="false" />
+106-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\gjaischool\.gradle\caches\transforms-3\5b4aa339182f7c0c9798b03e5e65fdd0\transformed\jetified-transport-runtime-2.2.6\AndroidManifest.xml:34:13-37
+107    </application>
+108
+109</manifest>

@@ -22,7 +22,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const VideoSubmit = ({navigation}) => {
   const route = useRoute();
-  const {category, videoPath} = route.params;
+  const {category, videoPath, group} = route.params;
   const [comment, setComment] = useState('');
   const commentRef = useRef({});
   const [cropVideoUri, setCropVideoUri] = useState();
@@ -50,6 +50,8 @@ const VideoSubmit = ({navigation}) => {
           type: 'video/mp4',
         });
         formData.append('comment', comment);
+        formData.append('category', category);
+        formData.append('group', group);
         handleSubmit(formData);
       });
     } else {
@@ -61,6 +63,8 @@ const VideoSubmit = ({navigation}) => {
         type: `video/${extension}`,
       });
       formData.append('comment', comment);
+      formData.append('category', category);
+      formData.append('group', group);
       handleSubmit(formData);
     }
   };
@@ -73,18 +77,18 @@ const VideoSubmit = ({navigation}) => {
       }
     });
     axios
-      .post('http://192.168.20.203:3000/user/sendTrainer', formData)
+      .post('http://20.249.87.104:3000/user/sendTrainer', formData)
       .then(res => {
-        console.log('handleSubmit =>');
+        console.log('handleSubmit =>', res.data);
 
-        // if (res === 1) {
-        //   navigation.navigate('SubmitComplete');
-        // }
+        if (res.data.result === 1) {
+          navigation.navigate('SubmitComplete');
+        }
       })
       .catch(error => {
-        console.error('submit error --->', error);
+        // console.error('submit error --->', error);
       });
-    navigation.navigate('SubmitComplete');
+    // navigation.navigate('SubmitComplete');
   };
 
   // 뒤로가기 (VideoSubmit -> RecordVideo)

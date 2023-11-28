@@ -72,7 +72,7 @@ function Join({ navigation }) {
       return false;
     }
     axios
-      .post("http://192.168.20.203:3000/user/emailCheck", {
+      .post("http://20.249.87.104:3000/user/emailCheck", {
         email: email,
       })
       .then((res) => {
@@ -133,7 +133,7 @@ function Join({ navigation }) {
       return false;
     } else {
       axios
-        .post("http://10.0.2.2:3000/user/join", {
+        .post("http://20.249.87.104:3000/user/join", {
           email: email,
           pw: pw,
           nick: nick

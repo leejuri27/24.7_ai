@@ -8,77 +8,82 @@ node_modules/
 # FE-Web Ignore List
 
 # Dependencies
-/FrontEnd/web_24_7/.pnp
-/FrontEnd/web_24_7/.pnp.js
+FrontEnd/web_24_7/.pnp
+FrontEnd/web_24_7/.pnp.js
 
 # testing, production
-/FrontEnd/web_24_7/coverage
-/FrontEnd/web_24_7/build
+FrontEnd/web_24_7/coverage
+FrontEnd/web_24_7/build
 
 # misc
-/FrontEnd/web_24_7/.env.*
-/FrontEnd/web_24_7/npm-debug.log*
-/FrontEnd/web_24_7yarn-debug.log*
-/FrontEnd/web_24_7/yarn-error.log*
+FrontEnd/web_24_7/.env
+FrontEnd/web_24_7/npm-debug.log*
+FrontEnd/web_24_7yarn-debug.log*
+FrontEnd/web_24_7/yarn-error.log*
 
 
 # FE-App Ignore List
 
 # Xcode
-/FrontEnd/app_24_7/build/
-/FrontEnd/app_24_7/*.pbxuser
-/FrontEnd/app_24_7/!default.pbxuser
-/FrontEnd/app_24_7/*.mode1v3
-/FrontEnd/app_24_7/!default.mode1v3
-/FrontEnd/app_24_7/*.mode2v3
-/FrontEnd/app_24_7/!default.mode2v3
-/FrontEnd/app_24_7/*.perspectivev3
-/FrontEnd/app_24_7/!default.perspectivev3
-/FrontEnd/app_24_7/xcuserdata
-/FrontEnd/app_24_7/*.xccheckout
-/FrontEnd/app_24_7/*.moved-aside
-/FrontEnd/app_24_7/DerivedData
-/FrontEnd/app_24_7/*.hmap
-/FrontEnd/app_24_7/*.ipa
-/FrontEnd/app_24_7/*.xcuserstate
-/FrontEnd/app_24_7/ios/.xcode.env.local
+FrontEnd/app_24_7/build/
+FrontEnd/app_24_7/*.pbxuser
+FrontEnd/app_24_7/!default.pbxuser
+FrontEnd/app_24_7/*.mode1v3
+FrontEnd/app_24_7/!default.mode1v3
+FrontEnd/app_24_7/*.mode2v3
+FrontEnd/app_24_7/!default.mode2v3
+FrontEnd/app_24_7/*.perspectivev3
+FrontEnd/app_24_7/!default.perspectivev3
+FrontEnd/app_24_7/xcuserdata
+FrontEnd/app_24_7/*.xccheckout
+FrontEnd/app_24_7/*.moved-aside
+FrontEnd/app_24_7/DerivedData
+FrontEnd/app_24_7/*.hmap
+FrontEnd/app_24_7/*.ipa
+FrontEnd/app_24_7/*.xcuserstate
+FrontEnd/app_24_7/ios/.xcode.env.local
+FrontEnd/app_24_7/android/app/build
 
 # Android/IntelliJ
-/FrontEnd/app_24_7/.gradle
-/FrontEnd/app_24_7/local.properties
-/FrontEnd/app_24_7/*.iml
-/FrontEnd/app_24_7/*.hprof
-/FrontEnd/app_24_7/.cxx/
-/FrontEnd/app_24_7/*.keystore
-/FrontEnd/app_24_7/!debug.keystore
+FrontEnd/app_24_7/.gradle
+FrontEnd/app_24_7/local.properties
+FrontEnd/app_24_7/*.iml
+FrontEnd/app_24_7/*.hprof
+FrontEnd/app_24_7/.cxx/
+FrontEnd/app_24_7/*.keystore
+FrontEnd/app_24_7/!debug.keystore
 
 # node.js
 /FrontEnd/app_24_7/npm-debug.log
 /FrontEnd/app_24_7/yarn-error.log
 
 # fastlane
-/FrontEnd/app_24_7/**/fastlane/report.xml
-/FrontEnd/app_24_7/**/fastlane/Preview.html
-/FrontEnd/app_24_7/**/fastlane/screenshots
-/FrontEnd/app_24_7/**/fastlane/test_output
+FrontEnd/app_24_7/**/fastlane/report.xml
+FrontEnd/app_24_7/**/fastlane/Preview.html
+FrontEnd/app_24_7/**/fastlane/screenshots
+FrontEnd/app_24_7/**/fastlane/test_output
 
 # Bundle artifact
-/FrontEnd/app_24_7/*.jsbundle
+FrontEnd/app_24_7/*.jsbundle
 
 # Ruby / CocoaPods
-/FrontEnd/app_24_7/ios/Pods/
-/FrontEnd/app_24_7/vendor/bundle
+FrontEnd/app_24_7/ios/Pods/
+FrontEnd/app_24_7/vendor/bundle
 
 # Temp File by Metro
-/FrontEnd/app_24_7/.metro-health-check*
+FrontEnd/app_24_7/.metro-health-check*
 
 # Testing
-/FrontEnd/app_24_7/coverage
+FrontEnd/app_24_7/coverage
 
 
 # BE-node.js Ignore List
 
-/BackEnd/nodejs/sessions
-/BackEnd/nodejs/node_modules
-/BackEnd/nodejs/public/uploads
-/BackEnd/nodejs/config
+BackEnd/nodejs/sessions
+BackEnd/nodejs/node_modules
+BackEnd/nodejs/public/uploads
+BackEnd/nodejs/config
+
+
+# AI Ignore
+AI/__pycache__

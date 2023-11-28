@@ -1,0 +1,7 @@
+
+URL : project-db-stu3.smhrd.com
+PORT : 3307
+user : Insa4_JSB_final_4
+pw : aishcool4
+
+https://verdant-structure-e78.notion.site/DB-Mysql-Maria-676417e8b66841b5ab5072db99a4c240?pvs=4

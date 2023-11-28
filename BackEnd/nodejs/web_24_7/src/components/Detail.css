@@ -1,0 +1,167 @@
+/* Detail Component */
+
+#detail-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 3%;
+  height: 94%;
+}
+
+#detail-left {
+  width: 45%;
+}
+
+#member-info-detail {
+  width: 85%;
+  height: 13%;
+  background-color: #fafafa;
+  border-radius: 1em;
+  padding: 6%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.member-name {
+  font-size: 1.3em;
+}
+
+.member-info {
+  margin-top: 10%;
+}
+
+#user-video-with-comment {
+  width: 93%;
+  margin-top: 10%;
+  height: 75%;
+  padding: 2%;
+  background-color: #fafafa;
+  border-radius: 1em;
+  overflow: hidden;
+}
+
+.detail-heading {
+  text-align: center;
+  margin: 1em 0;
+  font-size: 1.2em;
+}
+
+#user-video-with-comment hr {
+  width: 95%;
+  height: 1px;
+  background-color: black;
+  margin: 0 auto;
+}
+
+#video-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+  overflow: hidden;
+}
+
+#video-section video {
+  width: 150%;
+  height: 60vh;
+}
+
+#user-comment {
+  padding: 5%;
+}
+
+/* Detail Right Side */
+
+#detail-right {
+  width: 52%;
+  height: 100%;
+  
+  display: flex;
+  flex-direction: column;
+}
+
+#analysis-result {
+  height: 45%;
+  background-color: #fafafa;
+  border-radius: 1em;
+}
+
+#comment-write-form {
+  margin-top: 5%;
+  height: 50%;
+  background-color: #fafafa;
+  border-radius: 1em;
+}
+
+#comment-area {
+  height: 94%;
+  width: 94%;
+  padding: 3%;
+  background-color: #fafafa;
+  border-radius: 1em;
+}
+
+#attachment-input-form {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5%;
+  height: 5%;
+}
+
+#attachment-input-form input,
+#attachment-input-form label {
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+  box-sizing: border-box;
+  border: 1px solid #7254f5;
+  border-radius: 0.5em;
+  font-size: 0.9em;
+}
+
+#attachment-input-section {
+  width: 70%;
+  background-color: #fafafa;
+}
+
+#attachment-input-section input {
+  background-color: #fff;
+  margin-bottom: 4%;
+}
+
+#attachment-button-section {
+  width: 26%;
+  background-color: #fafafa;
+}
+
+#attachment-button-section label {
+  text-align: center;
+  display: block;
+  background-color: #7254f5;
+  color: #fff;
+  border-radius: 0.5em;
+  margin-bottom: 10%;
+}
+
+#attachment-button-section *:hover {
+  background-color: #fff;
+  color: #7254f5;
+}
+
+#attachment-button-section input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+#alret-message {
+  position: absolute;
+  bottom: 13%;
+  right: 13%;
+  text-align: center;
+  color: red;
+  display: none;
+}

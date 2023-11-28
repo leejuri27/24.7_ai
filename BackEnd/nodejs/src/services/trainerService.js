@@ -72,6 +72,19 @@ const trainerService = {
         } catch (err) {
             throw err;
         }
+    },
+
+    /** 피드백 전송 */
+    sendFeedback : async (connection_code, feedbackContent, link, base) => {
+        try {
+            const [results] = await conn.query(trainerQueries.sendFeedback, [connection_code, feedbackContent, link, base]);
+            if (results.affectedRows > 0) {
+                const [result] = await conn.query(trainerQueries.updateConfirm, [connection_code])
+                return result;
+            }
+        } catch (err) {
+            throw err;
+        }
     }
 }
 

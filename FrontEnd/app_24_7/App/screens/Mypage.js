@@ -52,7 +52,7 @@ function Mypage({ navigation }) {
     try {
       const storedEmail = await getEmailFromAsyncStorage();
       console.log("로그아웃 어싱크스토어", storedEmail)
-      axios.post("http://192.168.20.203:3000/user/logout", {
+      axios.post("http://20.249.87.104:3000/user/logout", {
         email : storedEmail
       })
         .then((res) => {
@@ -87,7 +87,7 @@ function Mypage({ navigation }) {
 
       // axios 요청에서 storedEmail을 사용하세요
       axios
-        .post("http://192.168.20.203:3000/user/passwordCheck", {
+        .post("http://20.249.87.104:3000/user/passwordCheck", {
           email: storedEmail,
           pw: pw
         })

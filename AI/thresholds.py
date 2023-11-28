@@ -9,7 +9,6 @@ def thresholds_squat():
 
     thresholds = {
                     'HIP_KNEE_VERT': _ANGLE_HIP_KNEE_VERT,
-
                     'OFFSET_THRESH'    : 35.0
                 }
 
@@ -20,15 +19,13 @@ def thresholds_lunge():
 
     _ANGLE_HIP_BACK_KNEE = {
                             'NORMAL' : (115, 180),
-                            # 'TRANS'  : (100 , 140),
-                            'PASS'   : (0, 110)
+                            'PASS'   : (0, 114)
                         }     
         
     thresholds = {
                     'HIP_BACK_KNEE_VERT': _ANGLE_HIP_BACK_KNEE,
-
                     'OFFSET_THRESH'    : 35.0,
-                }
+                } 
                 
     return thresholds
 
@@ -36,13 +33,12 @@ def thresholds_lunge():
 def thresholds_pushup():
 
     _ANGLE_SHLDR_ELBOW_VERT = {
-                            'NORMAL' : (0,  18),
-                            'PASS'  : (20, 120)
+                            'NORMAL' : (0,  30),
+                            'PASS'  : (31, 120)
                         }    
         
     thresholds = {
                     'SHLDR_ELBOW_VERT': _ANGLE_SHLDR_ELBOW_VERT,
-
                     'OFFSET_THRESH'    : 35.0
                 }
                 

@@ -64,7 +64,7 @@ function Changeinfo({ navigation }) {
   
       console.log("저장된 이메일3:", email);
   
-      const response = await axios.post("http://192.168.20.203:3000/user/modify", {
+      const response = await axios.post("http://20.249.87.104:3000/user/modify", {
         email: email,
         pw: pw,
         nickname : nick

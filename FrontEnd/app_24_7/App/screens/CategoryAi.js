@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {useState} from 'react';
 import {
   StyleSheet,
@@ -56,10 +57,23 @@ const CategoryAi = ({navigation}) => {
       {/* 스쿼트 */}
       <TouchableOpacity
         style={styles.touchContainer}
-        onPress={() => {
-          navigation.navigate('RecordVideo', {
-            category: '스쿼트',
-          });
+        onPress={async () => {
+          try {
+            let category = "스쿼트A"
+            let base = "http://20.249.87.104:3000"
+
+            const response = await axios.post("http://20.249.87.104:3000/user/getVideo",{
+              category
+            })
+            const videoPath = response.data.result.video_url;
+            const video_path = `${base}${videoPath}`
+            navigation.navigate('RecordVideo', {
+              category,
+              path: video_path
+            });
+          } catch (err){
+            console.log(err)
+          }
         }}>
         <ImageBackground
           source={require('../assets/image/squat.png')}
@@ -70,10 +84,23 @@ const CategoryAi = ({navigation}) => {
       {/* 런지 */}
       <TouchableOpacity
         style={styles.touchContainer}
-        onPress={() => {
-          navigation.navigate('RecordVideo', {
-            category: '런지',
-          });
+        onPress={async () => {
+          try {
+            let category = "런지A"
+            let base = "http://20.249.87.104:3000"
+
+            const response = await axios.post("http://20.249.87.104:3000/user/getVideo",{
+              category
+            })
+            const videoPath = response.data.result.video_url;
+            const video_path = `${base}${videoPath}`
+            navigation.navigate('RecordVideo', {
+              category,
+              path: video_path
+            });
+          } catch (err){
+            console.log(err)
+          }
         }}>
         <Image
           source={require('../assets/image/lunge.png')}
@@ -83,10 +110,23 @@ const CategoryAi = ({navigation}) => {
       {/* 푸쉬업 */}
       <TouchableOpacity
         style={styles.touchContainer}
-        onPress={() => {
-          navigation.navigate('RecordVideo', {
-            category: '푸쉬업',
-          });
+        onPress={async () => {
+          try {
+            let category = "푸쉬업A"
+            let base = "http://20.249.87.104:3000"
+
+            const response = await axios.post("http://20.249.87.104:3000/user/getVideo",{
+              category
+            })
+            const videoPath = response.data.result.video_url;
+            const video_path = `${base}${videoPath}`
+            navigation.navigate('RecordVideo', {
+              category,
+              path: video_path
+            });
+          } catch (err){
+            console.log(err)
+          }
         }}>
         <Image
           source={require('../assets/image/pushUp.png')}
@@ -127,12 +167,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily: 'Pretendard-Medium'
   },
-  // circle: {
-  //   width: windowHeight * 0.3,
-  //   height: windowHeight * 0.3,
-  //   borderRadius: 500,
-  //   backgroundColor: '#F9F7FE',
-  // },
 });
 
 export default CategoryAi;

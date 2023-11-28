@@ -1,19 +1,17 @@
-import os
-import time
 import cv2
 import numpy as np
-from utils import find_angle, get_landmark_features, draw_text, draw_dotted_line
+from utils import find_angle, get_landmark_features, draw_text, draw_dotted_line, draw_text_kor
 # utils 사용 이유
 # ediaPipe Pose 기능으로 제공되는 스켈레톤은 고정된 구조로 특정 응용 프로그램에 맞게 스켈레톤을 조정하기 어려움
 # get_landmark_features로 직접 스켈레톤을 만들면 원하는 구조로 쉽게 만들 수 있고, 계산량이 보다 적어 속도가 빠르다는 장점이 있다.
 
 class ProcessFrame:
-    def __init__(self, thresholds, fps, frame_size, flip_frame = False):
-        
+    def __init__(self, thresholds, fps, frame_size, file_name, flip_frame = False):
+        self.file_name = file_name
         self.ex_count = 1
         # self.file_directory = f'C:\\Users\\gjaischool\\Desktop\\test\\output{self.ex_count}.mp4'
         
-        self.file_directory = f'C:\\Users\\gjaischool\\Desktop\\24.7\\BackEnd\\nodejs\\public\\uploads\\output{self.ex_count}.mp4'
+        self.file_directory = f'C:\\Users\\gjaischool\\Desktop\\24.7\\BackEnd\\nodejs\\public\\uploads\\video\\{self.file_name}_{self.ex_count}.mp4'
         # self.file_directory = os.path.join(__file__, '..', 'BackEnd', 'nodejs','public', 'uploads', 'video') + f'output{self.ex_count}.mp4'
 
         # 매개변수 값
@@ -85,8 +83,7 @@ class ProcessFrame:
             'SCORE_LIST': [],
             
             'rec': False,
-
-            'curr_state': None
+            'SEP_LIST' : [] 
         }
         
     # 무릎 각도 기반 상태 반환
@@ -127,41 +124,66 @@ class ProcessFrame:
         elif 16 <= hip_angle <= 58:
             score += 30
 
-        if 76 <= knee_angle <= 90:
+        if 80 <= knee_angle <= 90:
             score += 100
-        elif 74 <= knee_angle <= 91:
+        elif 79 <= knee_angle <= 91:
             score += 90
-        elif 72 <= knee_angle <= 92:
+        elif 78 <= knee_angle <= 92:
             score += 80
-        elif 70 <= knee_angle <= 93:
+        elif 77 <= knee_angle <= 93:
             score += 70
-        elif 68 <= knee_angle <= 94:
+        elif 76 <= knee_angle <= 94:
             score += 60
-        elif 66 <= knee_angle <= 95:
+        elif 75 <= knee_angle <= 95:
             score += 50
-        elif 64 <= knee_angle <= 96:
+        elif 74 <= knee_angle <= 96:
             score += 40
-        elif 62 <= knee_angle <= 97:
+        elif 73 <= knee_angle <= 97:
             score += 30
+        elif 72 <= knee_angle <= 98:
+            score += 20
+        elif 71 <= knee_angle <= 99:
+            score += 10
+        elif 70 <= knee_angle <= 100:
+            score += 0
+        elif 69 <= knee_angle <= 101:
+            score += -10
+        elif 68 <= knee_angle <= 102:
+            score -= 20
+        else:
+            score += -30
         
-        if 20 <= ankle_angle <= 27:
+        if 22 <= ankle_angle <= 25:
             score += 100
-        elif 19 <= ankle_angle <= 28:
+        elif 21 <= ankle_angle <= 26:
             score += 90
-        elif 18 <= ankle_angle <= 29:
+        elif 20 <= ankle_angle <= 27:
             score += 80
-        elif 17 <= ankle_angle <= 30:
+        elif 20 <= ankle_angle <= 28:
             score += 70
-        elif 16 <= ankle_angle <= 31:
+        elif 19 <= ankle_angle <= 29:
             score += 60
-        elif 15 <= ankle_angle <= 32:
+        elif 19 <= ankle_angle <= 30:
             score += 50
-        elif 14 <= ankle_angle <= 33:
+        elif 18 <= ankle_angle <= 31:
             score += 40
-        elif 13 <= ankle_angle <= 34:
+        elif 18 <= ankle_angle <= 32:
             score += 30
+        elif 17 <= ankle_angle <= 33:
+            score += 20
+        elif 16 <= ankle_angle <= 34:
+            score += 10
+        elif 15 <= ankle_angle <= 35:
+            score += 0
+        elif 13 <= ankle_angle <= 36:
+            score += -10
+        elif 11 <= ankle_angle <= 37:
+            score += -20
+        else:
+            score += -30 
             
-        return score // 3
+        return score // 3 if score >= 0 else 0
+
 
     def process(self, frame: np.array, pose):
         
@@ -276,7 +298,6 @@ class ProcessFrame:
                 # 현재 상태를 가져오고, 상태 시퀀스 업데이트.
                 hip_ankle_knee_angle = find_angle(hip_coord, ankle_coord, knee_coord)
                 current_state = self._get_state(int(hip_ankle_knee_angle))
-                self.state_tracker['curr_state'] = current_state
 
                 
                 # 현재 상태가 s1인 경우
@@ -285,19 +306,10 @@ class ProcessFrame:
                         self.state_tracker['rec'] = False
                         self.out.release()
                         self.ex_count += 1
-                        self.file_directory = f'C:\\Users\\gjaischool\\Desktop\\24.7\\BackEnd\\nodejs\\public\\uploads\\output{self.ex_count}.mp4'
-                        # self.file_directory = f'C:\\Users\\gjaischool\\Desktop\\test\\output{self.ex_count}.mp4'
-                        # self.file_directory = os.path.abspat(os.path.join(__file__, '..', 'BackEnd', 'nodejs','public', 'uploads', 'video') + f'output{self.ex_count}.mp4')
-                        
+                        self.file_directory = f'C:\\Users\\gjaischool\\Desktop\\24.7\\BackEnd\\nodejs\\public\\uploads\\video\\{self.file_name}_{self.ex_count}.mp4'
                         self.out = cv2.VideoWriter(self.file_directory, cv2.VideoWriter_fourcc(*'mp4v'), self.fps, self.frame_size)
-                    
-                        file_size = os.path.getsize(self.file_directory)
-                        print('file name : ', self.file_directory)
-                        print('file_size : ' ,file_size, 'byte')
-                        
-                        
-                        
-                        
+                        self.state_tracker['SEP_LIST'].append(self.file_directory)
+
                     if len(self.state_tracker['HIP_ANGLE_LIST']) > 3:
                         max_hip = max(self.state_tracker['HIP_ANGLE_LIST'])
                         score = self._get_score(
@@ -346,17 +358,22 @@ class ProcessFrame:
                 cv2.putText(frame, str(int(ankle_vertical_angle)), (ankle_text_coord_x, ankle_coord[1]), self.font, 0.4, self.COLORS['light_green'], 2, lineType=cv2.LINE_4)
 
                 # 스쿼트 자세분석 점수 표시
-                draw_text(
-                        frame, 
-                        "SCORE: " + str(self.state_tracker['SCORE_LIST']), 
-                        pos=(int(frame_width*0.58), 80),
-                        text_color=(255, 255, 230),
-                        font_scale=0.7,
-                        text_color_bg=(0, 100, 0)
-                    )  
-                
+                frame = draw_text_kor(
+                    frame, 
+                    text="횟수별 AI분석 점수", 
+                    pos=(int(frame_width / 2)-250, 20),
+                    text_color=(255, 255, 230),
+                    text_color_bg=(0, 100, 0)
+                )     
+                for i in range(0, len(self.state_tracker['SCORE_LIST'])):
+                    frame = draw_text_kor(
+                    frame, 
+                    f"{i+1} 회: {self.state_tracker['SCORE_LIST'][i]}", 
+                    pos=(int(frame_width / 2)-250, 60+(40*i)),
+                    text_color=(255, 255, 230),
+                    text_color_bg=(0, 100, 0)
+                )  
 
             
-        return frame
-
+            return frame, self.state_tracker['SEP_LIST'], self.out, self.state_tracker['SCORE_LIST']
                     

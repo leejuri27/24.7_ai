@@ -23,6 +23,8 @@ import Mypage from './App/screens/Mypage';
 import Changeinfo from './App/screens/Changeinfo';
 import VideoSubmit from './App/screens/VideoSubmit';
 import SubmitComplete from './App/screens/SubmitComplete';
+import LoadingScreen from './App/screens/LoadingScreen';
+import LoadingScreen2 from './App/screens/LoadingScreen2';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -43,6 +45,20 @@ const App = () => {
             backgroundColor: '#FFFFFF',
           },
         }}>
+        <Stack.Screen
+          name="LoadingScreen"
+          component={LoadingScreen}
+          options={{
+            header: () => null,
+          }}
+        />
+        <Stack.Screen
+          name="LoadingScreen2"
+          component={LoadingScreen2}
+          options={{
+            header: () => null,
+          }}
+        />
         <Stack.Screen
           name="Login"
           component={Login}
@@ -145,7 +161,6 @@ const App = () => {
             headerTitleStyle: {fontFamily: 'Pretendard-Light'},
           }}
         />
-
       </Stack.Navigator>
     </NavigationContainer>
   );

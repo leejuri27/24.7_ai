@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,15 +7,15 @@ import {
   Text,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-
 // ---------------------------------------------------------
 import RecordVideo from './RecordVideo';
 import Icon from 'react-native-vector-icons/EvilIcons';
+import axios from 'axios'; // axios를 import 해야 합니다.
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const CategoryNoAi = ({navigation}) => {
+const CategoryNoAi = ({ navigation }) => {
   /** 어깨 드롭다운 */
   // 드롭다운 열고 닫기
   const [shoulderOpen, setShoulderOpen] = useState(false);
@@ -26,9 +26,9 @@ const CategoryNoAi = ({navigation}) => {
 
   // 드롭다운 메뉴에 들어갈 아이템들 {label: '메뉴명', value: '값} 형태
   const [shoulder, setShoulder] = useState([
-    {label: '숄더프레스', value: '1'},
-    {label: '사이드 레터럴 레이즈', value: '2'},
-    {label: '벤트 오버 레터럴 레이즈', value: '3'},
+    { label: '숄더프레스', value: '1' },
+    { label: '사이드 레터럴 레이즈', value: '2' },
+    { label: '벤트 오버 레터럴 레이즈', value: '3' },
   ]);
 
   // 다른 메뉴가 열리면 닫히게
@@ -41,36 +41,53 @@ const CategoryNoAi = ({navigation}) => {
   };
 
   // 드롭다운 메뉴를 선택할 때마다 값 변경
-  const shoulderOnChange = (value, index) => {
+  const shoulderOnChange = async (value, index) => {
     setShoulderCurrent(value);
+    let category = '';
+    let base = "http://20.249.87.104:3000"
     switch (value) {
       case '1':
-        navigation.navigate('RecordVideo', {
-          category: '숄더프레스',
-        });
-        // setCurrentValue(1);
+        category = '숄더프레스';
         break;
       case '2':
-        setCurrentValue(2);
+        category = '사이드 레터럴 레이즈';
         break;
       case '3':
-        setCurrentValue(3);
+        category = '벤트 오버 레터럴 레이즈';
         break;
       default:
         setCurrentValue(0);
         break;
     }
+
+    try {
+      const response = await axios.post("http://20.249.87.104:3000/user/getVideo", {
+        category
+      });
+
+      // video_url을 path에 직접 할당
+      const videoPath = response.data.result.video_url;
+      const video_path = `${base}${videoPath}`
+      navigation.navigate('RecordVideo', {
+        category,
+        path: video_path,
+        group: 'NoAi'
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
+
 
   /** 가슴 */
   const [chestOpen, setChestOpen] = useState(false);
   const [chestValue, setChestValue] = useState(' ');
   const [chestCurrent, setChestCurrent] = useState(1);
   const [chest, setChest] = useState([
-    {label: '벤치프레스', value: '1'},
-    {label: '덤벨 플라이', value: '2'},
-    {label: '인클라인 벤치프레스', value: '3'},
-    {label: '푸쉬업', value: '4'},
+    { label: '벤치프레스', value: '1' },
+    { label: '덤벨 플라이', value: '2' },
+    { label: '인클라인 벤치프레스', value: '3' },
+    { label: '푸쉬업', value: '4' },
   ]);
   const handleChesetOpen = () => {
     setChestOpen(prevState => !prevState);
@@ -79,24 +96,43 @@ const CategoryNoAi = ({navigation}) => {
     setArmOpen(false);
     setLegOpen(false);
   };
-  const chestOnChange = (value, index) => {
+  const chestOnChange = async (value, index) => {
     setChestCurrent(value);
+    let category = '';
+    let base = "http://20.249.87.104:3000"
     switch (value) {
       case '1':
-        setCurrentValue(1);
+        category = '벤치프레스';
         break;
       case '2':
-        setCurrentValue(2);
+        category = '덤벨 플라이';
         break;
       case '3':
-        setCurrentValue(3);
+        category = '인클라인 벤치프레스';
         break;
       case '4':
-        setCurrentValue(3);
+        category = '푸쉬업';
         break;
       default:
         setCurrentValue(0);
         break;
+    }
+
+    try {
+      const response = await axios.post("http://20.249.87.104:3000/user/getVideo", {
+        category
+      });
+
+      // video_url을 path에 직접 할당
+      const videoPath = response.data.result.video_url;
+      const video_path = `${base}${videoPath}`
+      navigation.navigate('RecordVideo', {
+        category,
+        path: video_path,
+        group: 'NoAi'
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -105,9 +141,9 @@ const CategoryNoAi = ({navigation}) => {
   const [backValue, setBackValue] = useState(' ');
   const [backCurrent, setBackCurrent] = useState(1);
   const [back, setBack] = useState([
-    {label: '렛풀다운', value: '1'},
-    {label: '덤벨로우', value: '2'},
-    {label: '데드리프트', value: '3'},
+    { label: '렛풀다운', value: '1' },
+    { label: '덤벨로우', value: '2' },
+    { label: '데드리프트', value: '3' },
   ]);
   const handleBackOpen = () => {
     setBackOpen(prevState => !prevState);
@@ -116,21 +152,40 @@ const CategoryNoAi = ({navigation}) => {
     setArmOpen(false);
     setLegOpen(false);
   };
-  const backOnChange = (value, index) => {
+  const backOnChange = async (value, index) => {
     setBackCurrent(value);
+    let category = '';
+    let base = "http://20.249.87.104:3000"
     switch (value) {
       case '1':
-        setCurrentValue(1);
+        category = '렛풀다운';
         break;
       case '2':
-        setCurrentValue(2);
+        category = '덤벨로우';
         break;
       case '3':
-        setCurrentValue(3);
+        category = '데드리프트';
         break;
       default:
         setCurrentValue(0);
         break;
+    }
+
+    try {
+      const response = await axios.post("http://20.249.87.104:3000/user/getVideo", {
+        category
+      });
+
+      // video_url을 path에 직접 할당
+      const videoPath = response.data.result.video_url;
+      const video_path = `${base}${videoPath}`
+      navigation.navigate('RecordVideo', {
+        category,
+        path: video_path,
+        group: 'NoAi'
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -139,10 +194,10 @@ const CategoryNoAi = ({navigation}) => {
   const [armValue, setArmValue] = useState(' ');
   const [armCurrent, setArmCurrent] = useState(1);
   const [arm, setArm] = useState([
-    {label: '덤벨 컬', value: '1'},
-    {label: '킥백', value: '2'},
-    {label: '트라이셉스 익스텐션', value: '3'},
-    {label: '딥스', value: '4'},
+    { label: '덤벨 컬', value: '1' },
+    { label: '킥백', value: '2' },
+    { label: '트라이셉스 익스텐션', value: '3' },
+    { label: '딥스', value: '4' },
   ]);
   const handleArmOpen = () => {
     setArmOpen(prevState => !prevState);
@@ -151,24 +206,43 @@ const CategoryNoAi = ({navigation}) => {
     setBackOpen(false);
     setLegOpen(false);
   };
-  const armOnChange = (value, index) => {
+  const armOnChange = async (value, index) => {
     setArmCurrent(value);
+    let category = '';
+    let base = "http://20.249.87.104:3000"
     switch (value) {
       case '1':
-        setCurrentValue(1);
+        category = '덤벨 컬';
         break;
       case '2':
-        setCurrentValue(2);
+        category = '킥백';
         break;
       case '3':
-        setCurrentValue(3);
+        category = '트라이셉스 익스텐션';
         break;
       case '4':
-        setCurrentValue(3);
+        category = '딥스';
         break;
       default:
         setCurrentValue(0);
         break;
+    }
+
+    try {
+      const response = await axios.post("http://20.249.87.104:3000/user/getVideo", {
+        category
+      });
+
+      // video_url을 path에 직접 할당
+      const videoPath = response.data.result.video_url;
+      const video_path = `${base}${videoPath}`
+      navigation.navigate('RecordVideo', {
+        category,
+        path: video_path,
+        group: 'NoAi'
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -177,8 +251,8 @@ const CategoryNoAi = ({navigation}) => {
   const [legValue, setLegValue] = useState(' ');
   const [legCurrent, setLegCurrent] = useState(1);
   const [leg, setLeg] = useState([
-    {label: '스쿼트', value: '1'},
-    {label: '런지', value: '2'},
+    { label: '스쿼트', value: '1' },
+    { label: '런지', value: '2' },
   ])
   const handleLegOpen = () => {
     setLegOpen(prevState => !prevState);
@@ -187,18 +261,37 @@ const CategoryNoAi = ({navigation}) => {
     setBackOpen(false);
     setArmOpen(false);
   }
-  const legOnChange = (value, index) => {
+  const legOnChange = async (value, index) => {
     setLegCurrent(value);
+    let category = '';
+    let base = "http://20.249.87.104:3000"
     switch (value) {
       case '1':
-        setCurrentValue(1);
+        category = '스쿼트';
         break;
       case '2':
-        setCurrentValue(2);
+        category = '런지';
         break;
       default:
         setCurrentValue(0);
         break;
+    }
+
+    try {
+      const response = await axios.post("http://20.249.87.104:3000/user/getVideo", {
+        category
+      });
+
+      // video_ur할l을 path에 직접 당
+      const videoPath = response.data.result.video_url;
+      const video_path = `${base}${videoPath}`
+      navigation.navigate('RecordVideo', {
+        category,
+        path: video_path,
+        group: 'NoAi'
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -206,7 +299,7 @@ const CategoryNoAi = ({navigation}) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: '부위별 운동',
-      headerLeft: ({onPress}) => (
+      headerLeft: ({ onPress }) => (
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('Category');
@@ -214,7 +307,7 @@ const CategoryNoAi = ({navigation}) => {
           <Icon name="chevron-left" size={40} />
         </TouchableOpacity>
       ),
-      headerTitleStyle: {fontFamily: 'Pretendard-Regular'},
+      headerTitleStyle: { fontFamily: 'Pretendard-Regular' },
       contentStyle: {
         backgroundColor: '#FAFAFA',
       },
@@ -227,8 +320,8 @@ const CategoryNoAi = ({navigation}) => {
       <View
         style={[
           styles.dropdown_container,
-          {zIndex: 5000},
-          {marginBottom: shoulderOpen ? 120 : 10},
+          { zIndex: 5000 },
+          { marginBottom: shoulderOpen ? 120 : 10 },
         ]}>
         <View>
           <DropDownPicker
@@ -243,16 +336,16 @@ const CategoryNoAi = ({navigation}) => {
             maxHeight={500} // 옵션이 많으면 잘려서 나오는데, 이때 maxHeight를 사용하여 길이를 조절하면 된다.
             onChangeValue={shoulderOnChange} // 값이 바뀔 때마다 실행
             // 스타일
-            dropDownContainerStyle={{...styles.dropDownContainer}}
+            dropDownContainerStyle={{ ...styles.dropDownContainer }}
             arrowIconStyle={{
               width: 25,
               height: 25,
               tintColor: '#7254F5', // 원하는 색상으로 설정
             }}
             listItemContainerStyle={styles.dropdown}
-            style={{...styles.Picker}}
-            textStyle={{...styles.textStyle}}
-            placeholderStyle = {{...styles.placeholderStyle}}
+            style={{ ...styles.Picker }}
+            textStyle={{ ...styles.textStyle }}
+            placeholderStyle={{ ...styles.placeholderStyle }}
           />
         </View>
       </View>
@@ -260,8 +353,8 @@ const CategoryNoAi = ({navigation}) => {
       <View
         style={[
           styles.dropdown_container,
-          {zIndex: 4000},
-          {marginBottom: chestOpen ? 150 : 10},
+          { zIndex: 4000 },
+          { marginBottom: chestOpen ? 150 : 10 },
         ]}>
         <View>
           <DropDownPicker
@@ -277,16 +370,16 @@ const CategoryNoAi = ({navigation}) => {
             onChangeValue={chestOnChange} // 값이 바뀔 때마다 실행
             dropDownDirection="BOTTOM"
             // 스타일
-            dropDownContainerStyle={{...styles.dropDownContainer}}
+            dropDownContainerStyle={{ ...styles.dropDownContainer }}
             arrowIconStyle={{
               width: 25,
               height: 25,
               tintColor: '#7254F5', // 원하는 색상으로 설정
             }}
             listItemContainerStyle={styles.dropdown}
-            style={{...styles.Picker}}
-            textStyle={{...styles.textStyle}}
-            placeholderStyle = {{...styles.placeholderStyle}}
+            style={{ ...styles.Picker }}
+            textStyle={{ ...styles.textStyle }}
+            placeholderStyle={{ ...styles.placeholderStyle }}
           />
         </View>
       </View>
@@ -294,8 +387,8 @@ const CategoryNoAi = ({navigation}) => {
       <View
         style={[
           styles.dropdown_container,
-          {zIndex: 3000},
-          {marginBottom: backOpen ? 120 : 10},
+          { zIndex: 3000 },
+          { marginBottom: backOpen ? 120 : 10 },
         ]}>
         <View>
           <DropDownPicker
@@ -311,16 +404,16 @@ const CategoryNoAi = ({navigation}) => {
             onChangeValue={backOnChange} // 값이 바뀔 때마다 실행
             dropDownDirection="BOTTOM"
             // 스타일
-            dropDownContainerStyle={{...styles.dropDownContainer}}
+            dropDownContainerStyle={{ ...styles.dropDownContainer }}
             arrowIconStyle={{
               width: 25,
               height: 25,
               tintColor: '#7254F5', // 원하는 색상으로 설정
             }}
-            listItemContainerStyle={{...styles.dropdown}}
-            style={{...styles.Picker}}
-            textStyle={{...styles.textStyle}}
-            placeholderStyle = {{...styles.placeholderStyle}}
+            listItemContainerStyle={{ ...styles.dropdown }}
+            style={{ ...styles.Picker }}
+            textStyle={{ ...styles.textStyle }}
+            placeholderStyle={{ ...styles.placeholderStyle }}
           />
         </View>
       </View>
@@ -328,8 +421,8 @@ const CategoryNoAi = ({navigation}) => {
       <View
         style={[
           styles.dropdown_container,
-          {zIndex: 2000},
-          {marginBottom: armOpen ? 150 : 10},
+          { zIndex: 2000 },
+          { marginBottom: armOpen ? 150 : 10 },
         ]}>
         <View>
           <DropDownPicker
@@ -345,16 +438,16 @@ const CategoryNoAi = ({navigation}) => {
             onChangeValue={armOnChange} // 값이 바뀔 때마다 실행
             dropDownDirection="BOTTOM"
             // 스타일
-            dropDownContainerStyle={{...styles.dropDownContainer}}
+            dropDownContainerStyle={{ ...styles.dropDownContainer }}
             arrowIconStyle={{
               width: 25,
               height: 25,
               tintColor: '#7254F5', // 원하는 색상으로 설정
             }}
             listItemContainerStyle={styles.dropdown}
-            style={{...styles.Picker}}
-            textStyle={{...styles.textStyle}}
-            placeholderStyle = {{...styles.placeholderStyle}}
+            style={{ ...styles.Picker }}
+            textStyle={{ ...styles.textStyle }}
+            placeholderStyle={{ ...styles.placeholderStyle }}
           />
         </View>
       </View>
@@ -362,8 +455,8 @@ const CategoryNoAi = ({navigation}) => {
       <View
         style={[
           styles.dropdown_container,
-          {zIndex: 1000},
-          {marginTop: legOpen ? 30 : 30},
+          { zIndex: 1000 },
+          { marginTop: legOpen ? 30 : 30 },
         ]}>
         <View>
           <DropDownPicker
@@ -379,16 +472,16 @@ const CategoryNoAi = ({navigation}) => {
             onChangeValue={legOnChange} // 값이 바뀔 때마다 실행
             dropDownDirection="BOTTOM"
             // 스타일
-            dropDownContainerStyle={{...styles.dropDownContainer}}
+            dropDownContainerStyle={{ ...styles.dropDownContainer }}
             arrowIconStyle={{
               width: 25,
               height: 25,
               tintColor: '#7254F5', // 원하는 색상으로 설정
             }}
             listItemContainerStyle={styles.dropdown}
-            style={{...styles.Picker}}
-            textStyle={{...styles.textStyle}}
-            placeholderStyle = {{...styles.placeholderStyle}}
+            style={{ ...styles.Picker }}
+            textStyle={{ ...styles.textStyle }}
+            placeholderStyle={{ ...styles.placeholderStyle }}
           />
         </View>
       </View>
@@ -416,7 +509,7 @@ const styles = StyleSheet.create({
   dropdown: {
     backgroundColor: 'white',
     justifyContent: 'center',
-    
+
   },
   Picker: {
     backgroundColor: '#F9F7FE',
@@ -436,7 +529,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2.22,
     // android
     elevation: 3,
-    
+
   },
   dropDownContainer: {
     borderWidth: null,
@@ -448,7 +541,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 20,
-    textAlign: 'center', 
+    textAlign: 'center',
     fontFamily: 'Pretendard-Light',
     // marginRight: 5,
   },

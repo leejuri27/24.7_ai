@@ -1,75 +1,214 @@
-import React, {useState} from 'react';
+import axios from 'axios';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   Dimensions,
   Image,
+  Text,
+  Alert,
 } from 'react-native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Calendar} from 'react-native-calendars';
 
 // ---------------------------------------------------------
 import Icon from 'react-native-vector-icons/Feather';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import LoadingScreen2 from './LoadingScreen2';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-console.log(windowWidth);
-console.log(windowHeight);
 
 const Main = ({navigation}) => {
-  // const [dates, setDates] = React.useState(['2023-10-31']);
-  const [selectedDay, setSelectedDay] = useState();
-  const today = new Date();
-  const todayString = today.toISOString().split('T')[0];
+  const [ready, setReady] = useState(true);
 
-  const markedDates = {
-    '2023-11-14': {
-      marked: true,
-      dotColor: '#AB9EF4',
-    },
-    '2023-11-10': {
-      marked: true,
-      dotColor: '#AB9EF4',
-    },
-    [todayString]: {
-      selected: true,
-      marked: true,
-      selectedColor: '#7254F5',
-      height: 8,
-    },
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [markedDates, setMarkedDates] = useState(markedDates);
+  const [feedbackDay, setFeedbackDay] = useState([]);
+  const [connectionCodes, setConnectionCodes] = useState({});
+
+  const [data, setData] = useState();
+  const [alarm, setAlarm] = useState([]);
+  const [alarmText, setAlarmText] = useState([].length);
+  const today = new Date();
+  let todayString = today.toISOString().split('T')[0];
+
+  // const markedDate = {
+  //   '2023-11-20': {
+  //     marked: true,
+  //     dotColor: 'red',
+  //   },
+  //   '2023-11-17': {
+  //     marked: true,
+  //     dotColor: 'red',
+  //   },
+  //   '2023-11-18': {
+  //     marked: true,
+  //     dotColor: 'red',
+  //   },
+  // };
+
+  useEffect(() => {
+    //1초 뒤에 실행되는 코드들이 담겨 있는 함수
+    setTimeout(() => {
+      getData();
+      getFeedbackConfirm();
+      setReady(false);
+    }, 1000);
+  }, []);
+
+  // connection date 정보 가져오기
+  const getData = async () => {
+    try {
+      const response = await axios.get(
+        'http://20.249.87.104:3000/user/getData',
+      );
+      console.log('mainData -----', response.data);
+      setData(response.data.list);
+    } catch (error) {
+      console.error('mainData ----- ', error);
+    }
   };
 
+  const getFeedbackConfirm = async () => {
+    try {
+      const response = await axios.get(
+        'http://20.249.87.104:3000/user/feedbackConfirm',
+      );
+      console.log('feedbackConfirm -----', response.data.result);
+      setAlarm(response.data.result);
+      console.log('------------------------알림', alarm);
+      setAlarmText(response.data.result.length);
+      console.log('알림 텍스트 ---------', alarmText);
+    } catch (error) {
+      console.error('feedbackConfirm ----- ', error);
+    }
+  };
+
+  useEffect(() => {
+    // 전체 데이터
+    if (data) {
+      let connectionDates = data.map(item => item.connection_date);
+      setSelectedDay(connectionDates);
+    }
+
+    // 피드백 데이터
+    if (alarm) {
+      let feedbackDates = alarm.map(item => item.connection_date);
+      setFeedbackDay(feedbackDates);
+    }
+  }, [data, alarm]);
+
+
+
+  // 선택한 날짜, connection code 각 state에 저장
+  useEffect(() => {
+    const select = {key: 'select', color: '#AB9EF4', selectedDotColor: '#AB9EF4'};
+    const feedback = {key: 'feedback', color: '#060320', selectedColor: '#F9F7FE'};
+    
+    if (selectedDay) {
+      let newMarkedDates = selectedDay.reduce((acc, date) => {
+        let dateKey = date.split(' ')[0];
+        acc[dateKey] = {
+          marked: true,
+          // dotColor: '#AB9EF4',
+          dots:[select],
+        };
+        return acc;
+      }, {});
+
+      if (feedbackDay) {
+        newMarkedDates = feedbackDay.reduce((acc, date) => {
+          let dateKey = date.split(' ')[0];
+          if (acc[dateKey]) {
+            acc[dateKey].dots.push(feedback);
+          } else {
+            acc[dateKey] = {
+              marked: true,
+              select: true,
+              selectedColor: 'red'
+            };
+          }
+          return acc;
+        }, newMarkedDates);
+      }
+
+      // 오늘 날짜 표시
+      newMarkedDates[todayString] = {
+        selected: true,
+        selectedColor: '#7254F5',
+        height: 8,
+      };
+      setMarkedDates(newMarkedDates);
+
+      let newConnectionCodes = data.reduce((acc, item) => {
+        let dateKey = item.connection_date.split(' ')[0];
+        acc[dateKey] = item.connection_code;
+        return acc;
+      }, {});
+      setConnectionCodes(newConnectionCodes);
+    }
+  }, [selectedDay, feedbackDay]);
+
+  // useEffect(() => {
+  //   setMarkedDates({
+  //     ...markedDates,
+  //     ...feedbackDay.map(day => ({
+  //       dateString: day,
+  //       marked: true,
+  //     })),
+  //   });
+  // }, [feedbackDay]);
+
+  /** 서버로 유저 코드 보내주는 함수 */
+  const sendConnectionCode = day => {
+    let connectionCode = connectionCodes[day.dateString];
+    console.log('Selected connection code:', connectionCode);
+
+    axios.post('http://20.249.87.104:3000/user/getFeedback', {
+      code: connectionCode,
+    });
+  };
+
+  // 밑으로는 달력 스타일 조정하는 곳
   const theme = {
     arrowColor: 'black',
     textDayFontSize: 16,
     textMonthFontSize: 16,
-    textDayHeaderFontSize: 16,
+    textDayHeaderFontSize: 13,
   };
 
   const headerStyle = {
-    textMonthFontSize: 85, // 월 폰트 크기 설정
-    textYearFontSize: 80, // 년도 폰트 크기 설정
+    textMonthFontSize: 100, // 월 폰트 크기 설정
+    textYearFontSize: 100, // 년도 폰트 크기 설정
   };
 
-  /** 날짜 누르면 해당 날짜 피드백 화면으로 이동 */
-  const handleCheck = () => {
-
-  }
-
-  return (
+  return ready ? (
+    <LoadingScreen2 />
+  ) : (
     <View style={styles.calendarContainer}>
       <View style={styles.headerComponent}>
+        {/* 알림 */}
         <TouchableOpacity
           style={styles.bellBtn}
-          onPress={() => navigation.navigate('Alarm', {selectedDay})}>
-          {/* <Fontisto name="bell" size={35} color="#AB9EF4" /> */}
+          onPress={() => navigation.navigate('Alarm', {selectedDay: alarm})}>
+          <View style={styles.alarmContainer}>
+            <View style={styles.alarmCircle}>
+              <Text style={styles.alarmText}>{alarmText}</Text>
+            </View>
+          </View>
           <Image
             source={require('../assets/image/Bell.png')}
             style={{width: 40, height: 40}}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.userBtn} onPress={()=>{navigation.navigate("Mypage")}}>
+        {/* 마이페이지 */}
+        <TouchableOpacity
+          style={styles.userBtn}
+          onPress={() => {
+            navigation.navigate('Mypage');
+          }}>
           <View style={styles.userCircle}>
             {/* <Icon name="user" size={35} color="#AB9EF4" /> */}
             <Image
@@ -85,12 +224,24 @@ const Main = ({navigation}) => {
           style={styles.calendar}
           theme={theme}
           markedDates={markedDates}
-          headerStyle={headerStyle} 
-          onDayPress={(day) => {
+          markingType={'multi-dot'}
+          headerStyle={headerStyle}
+          onDayPress={day => {
             console.log('Selected day:', day.month, day.day);
-            if (markedDates[day.dateString]) {
-              // setSelectedDay(day);
-              navigation.navigate('Feedback', {selectedDay: day});
+            // if (markedDates[day.dateString]) {
+            //   sendConnectionCode(day);
+            //   navigation.navigate('Feedback', {
+            //     selectMonth: day.month,
+            //     selectDay: day.day,
+            //   });
+            if (feedbackDay.includes(day.dateString)) {
+              sendConnectionCode(day);
+              navigation.navigate('Feedback', {
+                selectMonth: day.month,
+                selectDay: day.day,
+              });
+            } else {
+              Alert.alert('피드백이 도착하지 않았습니다.\n조금만 기다려주세요.')
             }
           }}
         />
@@ -99,12 +250,6 @@ const Main = ({navigation}) => {
         style={styles.cameraBtn}
         onPress={() => navigation.navigate('Category')}>
         <View style={styles.circle}>
-          {/* <Icon
-            name="camera"
-            size={60}
-            color="#7254F5"
-            style={styles.cameraIcon}
-          /> */}
           <Image
             source={require('../assets/image/Camera.png')}
             style={{width: 66, height: 65, marginTop: 15, marginLeft: 15}}
@@ -166,15 +311,26 @@ const styles = StyleSheet.create({
   bellBtn: {
     marginRight: 15,
   },
+  alarmContainer: {
+    marginLeft: 20,
+    position: 'relative',
+    zIndex: 1,
+  },
+  alarmCircle: {
+    width: 20,
+    height: 20,
+    backgroundColor: '#7254F5',
+    borderRadius: 50,
+    justifyContent: 'center',
+    position: 'absolute',
+  },
+  alarmText: {
+    color: '#fff',
+    alignSelf: 'center',
+  },
   userBtn: {
     marginLeft: 15,
   },
-  // userCircle: {
-  //   width: '100%', // 선의 너비를 100%로 설정
-  //   borderWidth: 3,
-  //   borderColor: '#AB9EF4',
-  //   borderRadius: 50,
-  // },
 });
 
 export default Main;

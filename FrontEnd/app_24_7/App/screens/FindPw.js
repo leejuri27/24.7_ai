@@ -76,7 +76,7 @@ function FindPw({ navigation }) {
       return false;
     } else {
       axios
-        .post("http://192.168.20.203:3000/user/findPassword", {
+        .post("http://20.249.87.104:3000/user/findPassword", {
           email: email,
           newPw: newPassword,
         })

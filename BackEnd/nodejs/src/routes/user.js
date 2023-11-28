@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt');
-const homeService = require('../services/homeService.js');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const axios = require("axios");
+const userService = require('../services/userService.js');
+require('dotenv').config({ path: '../../.env' });
 
 fs.readdir('./public/uploads', (error) => {
     if (error) {
@@ -15,37 +15,61 @@ fs.readdir('./public/uploads', (error) => {
         fs.mkdirSync('./public/uploads/video');
     }
 })
-// let varUA = navigator.userAgent.toLowerCase(); //userAgent 값 얻기  
-// if ( varUA.indexOf('android') > -1) {     
-//     //안드로이드 
-//     //.log('android')
-// } else if ( varUA.indexOf("iphone") > -1 || varUA.indexOf("ipad") > -1 || varUA.indexOf("ipod") > -1 ) {     
-//     //IOS 
-//     //.log('IOS')
-// } else {     
-//     //아이폰, 안드로이드 외 모바일 
-//     //.log('else')
-// }
 
+/** 회원가입 */
 router.post('/join', async (req, res) => {
     const data = req.body;
-    // //.log('data',data)
     try {
+        // 비밀번호 암호화
         const cryptedPW = bcrypt.hashSync(data.pw, 10);
-        const result = await homeService.join(data, cryptedPW);
+        const result = await userService.join(data, cryptedPW);
         if (result.affectedRows > 0) {
-            res.send({ result: 0 })
+            const userResult = await userService.duplicateCheck(data.email);
+            if (userResult.length > 0) {
+                req.session.user.email = userResult.email
+                req.session.user.code = userResult.user_code
+                res.send({ result: 1 })
+            }
         } else {
-            res.send({ result: 1 })
+            res.send({ result: 0 })
         }
     } catch (err) {
         res.status(500).json({ result: -1, error: "Internal Server Error" });
     }
 })
 
+/** 아이디가 저장되어있을 경우 자동로그인 */
+router.post('/autoLogin', async (req, res) => {
+    if (req.body.email) {
+        const result = await userService.duplicateCheck(req.body.email)
+        req.session.user.email = result[0].email
+        req.session.user.code = result[0].user_code
+    }
+})
+
+/** 로그인 */
+router.post('/login', async (req, res) => {
+    try {
+        const userEmail = req.body.email
+        const loginResult = await userService.duplicateCheck(userEmail);
+        if (loginResult.length > 0) {
+            const user = loginResult[0];
+            const same = bcrypt.compareSync(req.body.pw, user.pw);
+            if (same) {
+                req.session.user = { email: userEmail, code: user.user_code };
+                return res.json({ result: 1 });
+            }
+        }
+        return res.json({ result: 0 })
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+/** 로그아웃 */
 router.post('/logout', async (req, res) => {
     try {
-        req.session.destroy();
+        res.session.destroy();
         if (req.session == undefined) {
             res.json({ result: 1 })
         } else {
@@ -56,44 +80,46 @@ router.post('/logout', async (req, res) => {
     }
 })
 
+/** 이메일 중복 확인 */
 router.post('/emailCheck', async (req, res) => {
     try {
         const userEmail = req.body.email;
-        const result = await homeService.duplicateCheck(userEmail);
+        const result = await userService.duplicateCheck(userEmail);
         if (result.length > 0) {
             res.json({ result: 1 });
         } else {
             res.json({ result: 0 });
         }
 
-    } catch (error) {
-        //.error(error);
-        res.status(500).json({ result: -1, error: "Internal Server Error" });
+    } catch (err) {
+        res.status(500).json({ result: -1, err: "Internal Server Error" });
     }
 });
 
+/** 비밀번호 변경 */
 router.post('/findPassword', async (req, res) => {
-
     try {
-        let { email, newPw } = req.body
-        userEmail = req.body.email
+        const userEmail = req.session.user.email
+        const newPw = req.body.newPw
         const cryptedPW = bcrypt.hashSync(newPw, 10);
-        const result = await homeService.updatePassword(userEmail, cryptedPW)
+        const result = await userService.updatePassword(userEmail, cryptedPW)
         if (result.affectedRows > 0) {
             res.json({ result: 1 });
         } else {
             res.json({ result: 0 });
         }
     } catch (error) {
-        //.log(error);
+        console.log(err)
     }
 })
 
+/** 비밀번호 찾기 */
 router.post('/passwordCheck', async (req, res) => {
     try {
-        const userEmail = req.body.email;
-        const result = await homeService.signInCheck(userEmail)
+        const userEmail = req.session.user.email;
+        const result = await userService.signInCheck(userEmail)
         if (result.length > 0) {
+            // 암호화된 비밀번호를 가져와서 같은지 확인
             const same = bcrypt.compareSync(req.body.pw, result[0].pw)
             if (same) {
                 res.json({ result: 1 });
@@ -101,46 +127,43 @@ router.post('/passwordCheck', async (req, res) => {
         } else {
             res.json({ result: 0 });
         }
-    } catch (error) {
-        //.log(error);
+    } catch (err) {
+        console.log(err)
     }
 })
 
+/** 회원 정보 수정 */
 router.post('/modify', async (req, res) => {
     try {
-        const userEmail = req.body.email;
+        const userEmail = req.session.email;
         const nickname = req.body.nickname;
         const cryptedPW = bcrypt.hashSync(req.body.pw, 10);
-        const result = await homeService.updatePassword(userEmail, cryptedPW);
+        const result = await userService.updateNickname(userEmail, nickname, cryptedPW);
         if (result.affectedRows > 0) {
-            const nickResult = await homeService.updateNickname(userEmail, nickname);
-            if (nickResult.affectedRows > 0) {
-                res.json({ result: 1 });
-            }
+            res.json({ result: 1 });
         } else {
             res.json({ result: 0 });
         }
-    } catch (error) {
-        //.log(error);
+    } catch (err) {
+        console.log(err)
     }
 });
 
+/** 비디오 저장할때 오류호출 함수 */
 const upLoadVideo = (req, res, next) => {
     try {
         uploadVideo.single('video')(req, res, (err) => {
             if (err) {
-                // //.log(err);
                 return res.status(500).json({ result: -1, error: "파일 업로드 오류" });
             }
-            // //.log("File uploaded successfully");
             next();
         });
     } catch (err) {
-        // //.log(err);
         res.status(500).json({ result: -1, error: "내부 서버 오류" });
     }
 };
 
+/** 비디오 저장 함수 */
 const uploadVideo = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
@@ -150,115 +173,72 @@ const uploadVideo = multer({
             let time = new Date
             let setTime = `${time.getFullYear()}${time.getMonth() + 1}${time.getDate()}${time.getHours()}${time.getMinutes()}`
             const ext = path.extname(file.originalname)
-            // cb(null, `${req.user.user_code}_${setTime}` + ext);
-            cb(null, `${req.session.email}_${setTime}` + ext);
+            cb(null, `${req.session.user.code}_${setTime}` + ext);
         }
     })
 })
 
-// flask 연동 테스트중 ... 
+/** 비디오 업로드, 트레이너에게 보내기 */
 router.post('/sendTrainer', upLoadVideo, async (req, res) => {
     try {
-        // const userCode = req.user.user_code;
-        const trainer = await homeService.searchTrainer();
-        const matchNum = Math.floor(Math.random() * trainer.length)
-        // 임시로 넣은 변수(나중에 지워야함)
-        // let userEmail = 'qwe@gmail.com'
-        let accuracy = 0
-        let accuracy_list = []
-        let sum = 0
-        let exercise_category = '런지'
-        let user_comment = '자세교정 부탁드립니다.'
-        let testUrl = '/public/uploads/video/user_email_time'
-        for (let i = 0; i < 5; i++) {
-            accuracy_list[i] = Math.floor(Math.random() * 100)
-            sum += accuracy_list[i]
-        }
-        accuracy = sum / accuracy_list.length
-
-
-
-
-
-        // flask 연동 부분
-        // const url = JSON.stringify(req.file.path)
-        const url = req.file.path
-        const type = req.body.type
-        // console.log('to flask', req.file.path)
-        // console.log('to flask', url)
-        const response = await axios.post('http://127.0.0.1:5000/test',{url, type}); 
-
-        res.json({
-            message: 'from flask',
-            status: 'success',
-            data: response.data.result,
+        const userCode = req.session.user.code;
+        const trainerCodeList = await userService.searchTrainer();
+        const trainerCode = trainerCodeList[Math.floor(Math.random() * trainerCodeList.length)].trainer_code
+        const userComment = req.body.comment;
+        const exerciseCategory = req.body.category;
+        const checkAi = req.body.group;
+        const setConnection = await userService.setFeedback(userCode, trainerCode, userComment, exerciseCategory)
+        const connectionCode = setConnection[0].connection_code
+        /** 저장된 비디오를 커넥션 코드 파일로 옮기기 */
+        const fileName = req.file.filename
+        const newPath = path.join('public', 'uploads', 'video', `${connectionCode}`)
+        fs.readdir(newPath, (error) => {
+            if (error) {
+                fs.mkdirSync(newPath);
+                fs.renameSync(req.file.path, path.join(`${newPath}`, `${fileName}`))
+            };
         });
-
-
-
-
-
-
-
-
-
-        // if (result.affectedRows > 0) {
-        //     res.json({
-        //         message: 'from flask',
-        //         status: 'success',
-        //         data: response.data.result,
-        //     });
-        // } else {
-        //     res.json({
-        //         message:'fail',
-        //         status: 'fail'
-        //     })
-        // }
-
-  
-
-
-        // const result = await homeService.sendFeedback(req.user.email, trainer[matchNum].trainer_code, exercise_category, user_comment, accuracy, accuracy_list, testUrl);
-        // if (result.affectedRows > 0) {
-        //     res.json({ result: 1 })
-        // } else {
-        //     res.json({ result: 0 })
-        // }
-
-    } catch (err) {
-        //.log(err)
-    }
-})
-
-router.post('/logout', (req, res) => {
-    try {
-        req.session.destroy();
-        if (req.session == undefined) {
-            res.json({ result: 1 })
+        const setVideoUrl = await userService.setVideoUrl(newPath, connectionCode);
+        if (checkAi == 'Ai') {
+            const response = await axios.post(`${process.env.FLASK_IP}/test`, { url: newPath, type: exerciseCategory });
+            const accuracy = response.data.score
+            const accuracyList = response.data.sep_score
+            const setFeedbackAi = await userService.sendFeedback(accuracy, accuracyList, connectionCode)
+            if (setFeedbackAi.affectedRows > 0) {
+                console.log('Ai upload')
+                res.send({ result: 1 })
+            }
         } else {
-            res.json({ result: 0 })
+            console.log('NoAi upload')
+            res.send({ result: 1 })
         }
     } catch (err) {
-        //.log(err)
+        console.log(err)
     }
 })
 
+/** connection 코드에 맞는 피드백 가져오기 */
 router.post('/getFeedback', async (req, res) => {
     try {
-        const result = await homeService.getFeedback(userEmail);
+        const connectionCode = req.body.code
+        const result = await userService.getFeedback(connectionCode);
+        const trainer = await userService.getTrainerInfo(connectionCode);
+        const accuracyData = await userService.getDataFeedback(connectionCode);
         if (result.length > 0) {
-            res.json({ result: result })
+            res.json({ result: result, trainer: trainer, accuracyData: accuracyData })
         } else {
             res.json({ result: null })
         }
     } catch (err) {
-        //.log(err)
+        console.log(err)
     }
 })
 
-router.post('/getData', async (req, res) => {
+/** 유저의 피드백 전부 가져오기 */
+router.get('/getData', async (req, res) => {
     try {
-        const result = await homeService.getConnectionData(userEmail);
+        const userCode = req.session.user.code
+        const result = await userService.getConnectionData(userCode);
         if (result.length > 0) {
             res.json({ list: result })
         } else {
@@ -269,67 +249,59 @@ router.post('/getData', async (req, res) => {
     }
 })
 
-router.post('/test', async (req, res) => {
+/** 트레이너의 피드백이 있는 connection 호출 */
+router.get('/feedbackConfirm', async (req, res) => {
     try {
-        const trainer = await homeService.searchTrainer();
-        const matchNum = Math.floor(Math.random() * trainer.length)
-        // //.log('trainer : ', trainer)
-        // //.log('matchNum : ', matchNum)
-        let accuracy = 0
-        let accuracy_list = []
-        let sum = 0
-        let exercise_category = '스쿼트'
-        let user_comment = '골반 자세가 너무 안잡혀서 고민입니다.'
-        let testUrl = '/public/uploads/video/user_email_time'
-        let email = 'qwe@gmail.com'
-        for (let i = 0; i < 5; i++) {
-            accuracy_list[i] = Math.floor(Math.random() * 100)
-            sum += accuracy_list[i]
+        const userCode = req.session.user.code
+        const result = await userService.alarmFeedback(userCode);
+        if (result.length > 0) {
+            res.json({ result: result })
+        } else {
+            res.json({ result: null })
         }
-        accuracy = sum / accuracy_list.length
-        const result = await homeService.sendFeedback(email, trainer[matchNum].trainer_code, exercise_category, user_comment, accuracy, accuracy_list, testUrl);
-        // //.log('accuary', accuracy)
-        // //.log('accuary_list', accuracy_list)
-        // const result1 = await homeService.getFeedback(email);
-        // //.log('result1', result1)
-        // if (result1 == null) {
-        //     //.log('asdf')
-        // } else {
-        //     //.log('zxcz')
-        // }
     } catch (err) {
         //.log(err)
     }
 })
 
-// flask 연동 테스트중 ... 
-// flask -> node : 전체점수, 횟수별 점수리스트, 쪼개진영상url(url_1, url_2, ...) 
-// router.post('/dataToFlask',async(req,res)=>{
-//     try{
-//         let userEmail = 'qwe@gmail.com'
-//         const videoDirectory = './public/uploads/video'
-//         const files = fs.readdirSync(videoDirectory);
-//         const videoContent = []
-//         let i = 0
-//         files.forEach(file=>{
-//             if(file.startsWith(`${userEmail}_`)){
-//                 videoContent[i] = path.join(videoDirectory,file)
-//                 i += 1
-//             }
-//         })
-//         const data = {
-//             url : videoContent[videoContent.length - 1]
-//         }
-//         const response = await axios.post('http://localhost:5000/test',{data}); 
-//         //.log('response data : ',response.data)
-//         res.json({
-//             message : 'from flask',
-//             data : response.data
-//         })
-//     }catch(err){
-//         //.log(err)
-//     }
-// })
+/** 운동 참고 영상 가져오기 */
+router.post('/getVideo', async (req, res) => {
+    try {
+        const exerciseCategory = req.body.category;
+        const result = await userService.getReference(exerciseCategory);
+        if (result.length > 0) {
+            res.json({ result: result[0] })
+        } else {
+            res.json({ result: null })
+        }
+    } catch (err) {
+        //.log(err)
+    }
+})
 
+/** 메모 가져오기 */
+router.post('/getMemo', async (req, res) => {
+    const connectionCode = req.body.code
+    const result = await userService.getMemo(connectionCode);
+    if (result.lenght > 0) {
+        res.json({ result: result })
+    }
+})
+
+/** 메모 저장 */
+router.post('/saveMemo', async (req, res) => {
+    try {
+        const connectionCode = req.body.code
+        const memo = req.body.input
+        const result = await userService.updateMemo(connectionCode, memo);
+        if (result.affectedRows > 0) {
+            res.json({ result: 1 })
+        } else {
+            res.json({ result: 0 })
+        }
+    } catch (err) {
+        console.log(err)
+    }
+})
 
 module.exports = router;
